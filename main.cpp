@@ -35,6 +35,13 @@ int main() {
     scene->add(tank);
     scene->add(ambientLight);
 
+    //Bakke for at tanksen kan kjøre rundt
+    auto groundGeometry = PlaneGeometry::create(1000, 1000);
+    auto groundMaterial = MeshStandardMaterial::create({{"color", Color::green}});
+    auto groundMesh = Mesh::create(groundGeometry, groundMaterial);
+    groundMesh->rotation.x = -math::PI / 2;
+    groundMesh->position.y = 0;
+    scene->add(groundMesh);
 
     KeyListener listener;
     canvas.addKeyListener(listener);
