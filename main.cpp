@@ -16,8 +16,9 @@ int main() {
     std::cout <<std::filesystem::current_path();
 
     //For kameraet
-    PerspectiveCamera camera(60.0, canvas.aspect(), 0.1, 1000.0);
-    camera.position.z = 15;
+    PerspectiveCamera camera(45, canvas.aspect(), 0.1, 10000);
+    camera.position.set(0, 6, -10);
+    OrbitControls controls{camera, canvas};
    // camera.lookAt({x:0, y:0, z:0}());
 
     //For å lage scenen
@@ -26,6 +27,7 @@ int main() {
 
     landscape land;
     std::shared_ptr<Mesh> groundMesh = land.groundMesh;
+    groundMesh ->receiveShadow = true;
     scene->add(groundMesh);
 
     KeyListener listener;
