@@ -1,4 +1,5 @@
-add_library(TankLib tank.cpp)
+add_library(TankLib tank.cpp
+        ../include/Landscape.hpp)
 
 target_include_directories(TankLib PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
