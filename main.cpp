@@ -13,6 +13,9 @@ int main() {
     AssimpLoader loader;
    // auto geometry = loader.load("Tank.glb");
 
+    auto ambientLight = AmbientLight::create(0xffffff, 0.5f);
+
+
     std::cout <<std::filesystem::current_path();
 
     //For kameraet
@@ -24,6 +27,11 @@ int main() {
     //For å lage scenen
     auto scene = Scene::create();
     scene->background = Color::aliceblue;
+
+    //Legger til lys
+    auto directionalLight = DirectionalLight::create(0xffffff, 1.0f);
+    directionalLight->position.set(10, 20, 10);
+    scene->add(directionalLight);
 
     landscape land;
     std::shared_ptr<Mesh> groundMesh = land.groundMesh;
