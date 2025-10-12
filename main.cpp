@@ -16,12 +16,13 @@ int main() {
     GLRenderer renderer(canvas.size());
 
     PerspectiveCamera camera(45, canvas.aspect(), 0.1, 10000);
-    camera.position.set(0, 6, -30);
+    camera.position.set(5, 6, -30);
     OrbitControls controls{camera, canvas};
 
     //Gjør slik at man kan ha stort vindu
     WindowResizeHandler resizeHandler(camera, renderer);
     canvas.onWindowResize(resizeHandler);
+
 
     //Legger til lys
     auto light = HemisphereLight::create(0xffffbb, 0x080820);
@@ -34,13 +35,18 @@ int main() {
     scene->add(light);
 
 
+
     //Legger til tanksen i scenen
     Tank tank("../assets/Tank3.stl");
     scene->add(tank.mesh);
 
-    /*auto &tankCamera = tank.camera();
-    auto cameraHelper = CameraHelper::create(tankCamera);
-    scene->add(cameraHelper);*/
+    tank.position.y = 0.25;
+    scene->add(tank);
+
+    //Denne fungere ikke helt enda
+    camera.lookAt(tank.position);   //Prøver å få kameraet til å se på tanksen
+    tank.add(camera); //Prøver å gjøre slik at kameraet følger tanksen
+
 
     //Landskap for at tanksen kan kjøre rundt
     landscape land;
