@@ -45,10 +45,10 @@ public:keycontrolls(Object3D& obj)
     void update(float dt) {
 
         if (keyState_.up) {
-            obj_->translateZ(-speed_*dt);
+            obj_->translateX(-speed_*dt);
         }
         if (keyState_.down) {
-            obj_->translateZ(speed_*dt);
+            obj_->translateX(speed_*dt);
         }
         if (keyState_.right) {
             obj_->rotateY(-angularSpeed_*dt);
@@ -67,7 +67,7 @@ private:
     } keyState_;
 
     Object3D* obj_;
-    float speed_ = 5.0f; //Farten på W/S
+    float speed_ = 10.0f; //Farten på W/S
     float angularSpeed_ = 2.0f; //Farten på A/D
 };
 
