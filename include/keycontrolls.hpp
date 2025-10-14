@@ -83,4 +83,3 @@ public:keycontrolls(Object3D& obj)
 
 };
 #endif //TANK_KEYCONTROLLS_HPP
-

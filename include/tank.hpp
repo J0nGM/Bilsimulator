@@ -1,9 +1,8 @@
 #ifndef EXAM_TANK_HPP
 #define EXAM_TANK_HPP
 
-#pragma once
+#pragma once //Fikk hjelp av AI for dettte
 #include <threepp/threepp.hpp>
-using namespace threepp;
 
 class Tank: public threepp::Object3D {
 public:

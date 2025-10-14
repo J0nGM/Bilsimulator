@@ -2,12 +2,8 @@
 #include <threepp/threepp.hpp>
 #include "tank.hpp"
 #include "threepp/materials/LineBasicMaterial.hpp"
-//#include "cmake-build-debug/_deps/assimp-src/code/AssetLib/Blender/BlenderDNA.h"
 #include "keycontrolls.hpp"
 #include "landscape.hpp"
-#include "threepp/loaders/AssimpLoader.hpp"
-#include "threepp/loaders/OBJLoader.hpp"
-#include "threepp/helpers/CameraHelper.hpp"
 #include "WindowResize.hpp"
 
 int main() {
@@ -35,6 +31,7 @@ int main() {
     scene->add(light);
 
 
+
     //Legger til tanksen i scenen
     Tank tank("../assets/Tank3.stl");
     scene->add(tank.mesh);
@@ -43,7 +40,7 @@ int main() {
     scene->add(tank);
 
     //Denne fungere ikke helt enda
-    camera.lookAt(tank.position); //Prøver å få kameraet til å se på tanksen
+    camera.lookAt(tank.position);   //Prøver å få kameraet til å se på tanksen
     tank.add(camera); //Prøver å gjøre slik at kameraet følger tanksen
 
 
@@ -53,17 +50,18 @@ int main() {
     groundMesh->position.y = -0.5f;
     groundMesh->receiveShadow = true;
     scene->add(groundMesh);
+    scene->add(land.roadMesh);
 
 
     //Object3D obj;
-    keycontrolls keyControls(*tank.mesh);
+    keycontrolls keyControls(*tank.mesh); // Pass the tank's mesh
     canvas.addKeyListener(keyControls);
     std::cout << "Press 'r' to reset tank position. Use WASD keys to steer tank" << std::endl;
 
     Clock clock;
     canvas.animate([&] {
         double dt = clock.getDelta();
-        keyControls.update(dt); //For å få knappen av bevegsel til å oppdatere seg
+        keyControls.update(dt); //For å knappen av bevegsel til å oppdatere seg
 
         renderer.render(*scene, camera);
     });

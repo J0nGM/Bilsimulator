@@ -35,7 +35,7 @@ add_executable(TankSim main.cpp
         include/Landscape.hpp
         include/WindowResize.hpp)
 
-target_link_libraries(TankSim PUBLIC TankLib)
 
+target_link_libraries(TankSim PUBLIC TankLib)
 
 file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

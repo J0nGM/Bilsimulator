@@ -3,7 +3,7 @@
 #define TANK_CAMERA_HPP
 
 #include <threepp/threepp.hpp>
-using namespace threepp;
+
 
 // C++
 class WindowResizeHandler {
