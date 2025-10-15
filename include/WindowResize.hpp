@@ -9,7 +9,7 @@
 class WindowResizeHandler {
 
     public:
-    WindowResizeHandler(PerspectiveCamera& camera, GLRenderer& renderer)
+    WindowResizeHandler(threepp::PerspectiveCamera& camera, threepp::GLRenderer& renderer)
         : camera_(camera), renderer_(renderer) {}
 
     void operator()(const threepp::WindowSize& size) {
@@ -19,8 +19,8 @@ class WindowResizeHandler {
     }
 
 private:
-    PerspectiveCamera& camera_;
-    GLRenderer& renderer_;
+    threepp::PerspectiveCamera& camera_;
+    threepp::GLRenderer& renderer_;
 };
 
 #endif //TANK_CAMERA_HPP
