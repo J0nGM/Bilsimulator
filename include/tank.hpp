@@ -6,23 +6,18 @@
 #include "threepp/loaders/AssimpLoader.hpp"
 
 class Tank: public threepp::Object3D {
-public:
+private:
+    std::vector<std::shared_ptr<threepp::Mesh>> left_stripes_;
+    std::vector<std::shared_ptr<threepp::Mesh>> right_stripes_;
+    float stripes_speed_ = 2.0f;
+    float stripe_length_ = 1.0f;
+    public:
     std::shared_ptr<threepp::Mesh> mesh = threepp::Mesh::create();
 
-    Tank(const std::string& path) {
-        threepp::AssimpLoader loader;
-        auto loadedGroup = loader.load(path);
+    Tank(const std::string& path);
 
-        loadedGroup->traverseType<threepp::Mesh>([](threepp::Mesh& m) {
-            m.receiveShadow = true;
-            m.castShadow = true;
-        });
+    void update_stripes(double dt, float tank_speed, float dir);
 
-        loadedGroup->scale.set(15.0f, 15.0f, 15.0f);
-        loadedGroup->rotateY(threepp::math::PI); //Rotere tanksen 180 grader, for at W/S går riktig vei
-        add(loadedGroup);
-    }
-
-};
+ };
 
 #endif //EXAM_TANK_HPP

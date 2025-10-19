@@ -61,6 +61,7 @@ int main() {
     canvas.animate([&] {
         double dt = clock.getDelta();
         key_controls.update(dt); //For å knappen av bevegsel til å oppdatere seg
+        tank.update_stripes(static_cast<float>(dt), key_controls.get_speed(), static_cast<float>(key_controls.get_direction_moved()));
         camera_follow.update(static_cast<float>(dt));
 
         renderer.render(*scene, camera);
