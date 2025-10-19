@@ -3,20 +3,26 @@
 
 #pragma once //Fikk hjelp av AI for dettte
 #include <threepp/threepp.hpp>
+#include "threepp/loaders/AssimpLoader.hpp"
 
 class Tank: public threepp::Object3D {
 public:
-    std::shared_ptr<threepp::Mesh> mesh;
+    std::shared_ptr<threepp::Mesh> mesh = threepp::Mesh::create();
 
     Tank(const std::string& path) {
-        threepp::STLLoader loader;
-        auto geometry = loader.load(path);
-        auto material = threepp::MeshStandardMaterial::create({{"color", threepp::Color::red}});
-        mesh = threepp::Mesh::create(geometry, material);
-        mesh->scale *= 0.001f;
+        threepp::AssimpLoader loader;
+        auto loadedGroup = loader.load(path);
 
-        add(mesh);
+        loadedGroup->traverseType<threepp::Mesh>([](threepp::Mesh& m) {
+            m.receiveShadow = true;
+            m.castShadow = true;
+        });
+
+        loadedGroup->scale.set(15.0f, 15.0f, 15.0f);
+        loadedGroup->rotateY(threepp::math::PI); //Rotere tanksen 180 grader, for at W/S går riktig vei
+        add(loadedGroup);
     }
+
 };
 
 #endif //EXAM_TANK_HPP

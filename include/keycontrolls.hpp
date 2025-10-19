@@ -70,6 +70,7 @@ public:keycontrolls(Object3D& obj)
     void onKeyReleased(KeyEvent evt) override {
         if (evt.key == Key::W) {
             key_state_.up = false;
+            key_state_.up = false;
         } else if (evt.key == Key::S) {
             key_state_.down = false;
         } else if (evt.key == Key::D) {

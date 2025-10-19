@@ -34,8 +34,8 @@ int main() {
 
 
     //Legger til tanksen i scenen
-    Tank tank("../assets/Tank3.stl");
-    tank.position.y = 0.25;
+    Tank tank("../assets/Tank.glb");
+    tank.position.y = 5.0f;
     scene->add(tank);
 
     //Object3D obj;
