@@ -37,7 +37,13 @@ int main() {
     Tank tank("../assets/Tank3.stl");
     tank.position.y = 0.25;
     scene->add(tank);
-    camera_follow camera_follow(camera, tank, Vector3(60, 20, 0));
+
+    //Object3D obj;
+    keycontrolls key_controls(tank); // Pass the tank's mesh
+    canvas.addKeyListener(key_controls);
+    std::cout << "Press 'r' to reset tank position. Use WASD keys to steer tank" << std::endl;
+
+    camera_follow camera_follow(camera, tank, key_controls, Vector3(60, 20, 0));
 
     //Landskap for at tanksen kan kjøre rundt
     landscape land;
@@ -50,10 +56,6 @@ int main() {
     }
 
 
-    //Object3D obj;
-    keycontrolls key_controls(tank); // Pass the tank's mesh
-    canvas.addKeyListener(key_controls);
-    std::cout << "Press 'r' to reset tank position. Use WASD keys to steer tank" << std::endl;
 
     Clock clock;
     canvas.animate([&] {

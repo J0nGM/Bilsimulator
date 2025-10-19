@@ -15,18 +15,19 @@ using namespace threepp;
 
 
 class keycontrolls: public KeyListener {
-private: Object3D* obj_;
-    Vector3 initialPosition_;
-    Quaternion initialRotation_;
+
+    private: Object3D* obj_;
+    Vector3 initial_position_;
+    Quaternion initial_rotation_;
 
     //Gir indikasjon på hvilken knapp som er trykket inn
-    struct KeyState {
+    struct key_state {
     bool up = false;
     bool down = false;
     bool left = false;
     bool right = false;
 
-    } keyState_;
+    } key_state_;
 
     float speed_ = 0.0f;
     float max_Speed_ = 20.0f;   //Farten på W/S
@@ -37,35 +38,44 @@ private: Object3D* obj_;
 
 public:keycontrolls(Object3D& obj)
         : obj_(&obj),
-        initialPosition_(obj.position),
-        initialRotation_(obj.quaternion)  {}
+        initial_position_(obj.position),
+        initial_rotation_(obj.quaternion)  {}
 
+    //For å få delay på kamera, som jeg kan skal bruke i camercontrolls.hpp
+    float get_speed() const {
+    return speed_;
+}
 
+    int get_direction_moved () const {
+    if (key_state_.up) return 1;
+    if (key_state_.down) return -1;
+    return 0;
+}
     void onKeyPressed(KeyEvent evt) override {
     if (evt.key == Key::W) {
-        keyState_.up = true;
+        key_state_.up = true;
     } else if (evt.key == Key::S) {
-        keyState_.down = true;
+        key_state_.down = true;
     } else if (evt.key == Key::D) {
-        keyState_.right = true;
+        key_state_.right = true;
     } else if (evt.key == Key::A) {
-        keyState_.left = true;
+        key_state_.left = true;
     }else if (evt.key == Key::R) { //Legger til en reset kanpp for tanksen
-        obj_->position.copy(initialPosition_);
-        obj_->quaternion.copy(initialRotation_);
+        obj_->position.copy(initial_position_);
+        obj_->quaternion.copy(initial_rotation_);
     }
 
     }
 
     void onKeyReleased(KeyEvent evt) override {
         if (evt.key == Key::W) {
-            keyState_.up = false;
+            key_state_.up = false;
         } else if (evt.key == Key::S) {
-            keyState_.down = false;
+            key_state_.down = false;
         } else if (evt.key == Key::D) {
-            keyState_.right = false;
+            key_state_.right = false;
         } else if (evt.key == Key::A) {
-            keyState_.left = false;
+            key_state_.left = false;
         }
     }
 
@@ -73,8 +83,8 @@ public:keycontrolls(Object3D& obj)
 
     void update(float dt) {
     int move_Direction = 0;
-    if (keyState_.up) move_Direction = 1;
-    else if (keyState_.down) move_Direction = -1;
+    if (key_state_.up) move_Direction = 1;
+    else if (key_state_.down) move_Direction = -1;
     // Acceleration and deceleration
     if (move_Direction != 0) {
         speed_ += accleration_ * dt;
@@ -87,8 +97,8 @@ public:keycontrolls(Object3D& obj)
     if (move_Direction != 0) obj_->translateX(-speed_ * move_Direction * dt);
 
     //rotasjon
-    if (keyState_.right) obj_->rotateY(-angel_Speed_ *dt);
-    if (keyState_.left) obj_->rotateY(angel_Speed_ *dt);
+    if (key_state_.right) obj_->rotateY(-angel_Speed_ *dt);
+    if (key_state_.left) obj_->rotateY(angel_Speed_ *dt);
 }
 };
 #endif //TANK_KEYCONTROLLS_HPP
