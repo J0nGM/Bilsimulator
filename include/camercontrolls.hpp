@@ -3,15 +3,19 @@
 #include <threepp/threepp.hpp>
 
 
-class camera_Follow{
+class camera_follow{
 private:
     threepp::PerspectiveCamera& camera_;
     threepp::Object3D& target_;
     threepp::Vector3 offset_;
     float smoothSpeed_ = 0.1f;
+    float min_distanse_= 30.0f;
+    float max_distanse_ = 60.0f;
 
+
+    //Fikk hjelp av AI å lage denne delen her
 public:
-    camera_Follow(PerspectiveCamera& camera, Object3D& target, const Vector3& offset)
+    camera_follow(PerspectiveCamera& camera, Object3D& target, const Vector3& offset)
         : camera_(camera), target_(target), offset_(offset) {}
     void update(float dt) {
     Vector3 desired_position = target_.position + offset_;

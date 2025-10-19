@@ -37,29 +37,29 @@ int main() {
     Tank tank("../assets/Tank3.stl");
     tank.position.y = 0.25;
     scene->add(tank);
-    CameraFollow cameraFollow(camera, tank, Vector3(60, 20, 0));
+    camera_follow camera_follow(camera, tank, Vector3(60, 20, 0));
 
     //Landskap for at tanksen kan kjøre rundt
     landscape land;
-    auto groundMesh = land.groundMesh;
-    groundMesh->position.y = -0.5f;
-    groundMesh->receiveShadow = true;
-    scene->add(groundMesh);
+    auto ground_mesh = land.groundMesh;
+    ground_mesh->position.y = -0.5f;
+    ground_mesh->receiveShadow = true;
+    scene->add(ground_mesh);
     for (const auto& road : land.roads) {
         scene->add(road);
     }
 
 
     //Object3D obj;
-    keycontrolls keyControls(tank); // Pass the tank's mesh
-    canvas.addKeyListener(keyControls);
+    keycontrolls key_controls(tank); // Pass the tank's mesh
+    canvas.addKeyListener(key_controls);
     std::cout << "Press 'r' to reset tank position. Use WASD keys to steer tank" << std::endl;
 
     Clock clock;
     canvas.animate([&] {
         double dt = clock.getDelta();
-        keyControls.update(dt); //For å knappen av bevegsel til å oppdatere seg
-        cameraFollow.update();
+        key_controls.update(dt); //For å knappen av bevegsel til å oppdatere seg
+        camera_follow.update(static_cast<float>(dt));
 
         renderer.render(*scene, camera);
     });
