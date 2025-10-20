@@ -13,55 +13,55 @@ int main() {
     GLRenderer renderer(canvas.size());
 
     PerspectiveCamera camera(45, canvas.aspect(), 0.1, 10000);
-    camera.position.set(5, 6, -30);
-   // OrbitControls controls{camera, canvas};
+    camera.position.set(0, 50, 100);
 
-    //Gjør slik at man kan ha stort vindu
-    WindowResizeHandler resizeHandler(camera, renderer);
+
+    Window_resize_handler resizeHandler(camera, renderer);
     canvas.onWindowResize(resizeHandler);
 
 
-    //Legger til lys
     auto light = HemisphereLight::create(0xffffbb, 0x080820);
 
     std::cout << std::filesystem::current_path();
 
-    //For å lage scenen
+
     auto scene = Scene::create();
     scene->background = Color::aliceblue;
     scene->add(light);
 
 
 
-    //Legger til tanksen i scenen
-    Tank tank("../assets/Tank.glb");
+    Tank tank("../assets/3Dmodell/viecal/Tanktest.glb");
+
     tank.position.y = 5.0f;
     scene->add(tank);
 
-    //Object3D obj;
-    keycontrolls key_controls(tank); // Pass the tank's mesh
+    Box3 bb;
+
+    bb.setFromObject(tank);
+
+
+    Key_controlls key_controls(tank);
     canvas.addKeyListener(key_controls);
     std::cout << "Press 'r' to reset tank position. Use WASD keys to steer tank" << std::endl;
 
-    camera_follow camera_follow(camera, tank, key_controls, Vector3(60, 20, 0));
 
-    //Landskap for at tanksen kan kjøre rundt
-    landscape land;
+    Camera_follow camera_follow(camera, tank, key_controls, Vector3(60, 20, 0));
+
+    Landscape land;
     auto ground_mesh = land.groundMesh;
     ground_mesh->position.y = -0.5f;
     ground_mesh->receiveShadow = true;
     scene->add(ground_mesh);
-    for (const auto& road : land.roads) {
+    for (const auto &road: land.roads) {
         scene->add(road);
     }
-
 
 
     Clock clock;
     canvas.animate([&] {
         double dt = clock.getDelta();
-        key_controls.update(dt); //For å knappen av bevegsel til å oppdatere seg
-        tank.update_stripes(static_cast<float>(dt), key_controls.get_speed(), static_cast<float>(key_controls.get_direction_moved()));
+        key_controls.update(dt);
         camera_follow.update(static_cast<float>(dt));
 
         renderer.render(*scene, camera);
