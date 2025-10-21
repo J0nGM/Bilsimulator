@@ -1,7 +1,5 @@
-#ifndef EXAM_TANK_HPP
-#define EXAM_TANK_HPP
-
 #pragma once //Fikk hjelp av AI for dettte
+
 #include <threepp/threepp.hpp>
 #include "threepp/loaders/AssimpLoader.hpp"
 
@@ -13,4 +11,3 @@ public:
     Tank(const std::string &path);
 };
 
-#endif //EXAM_TANK_HPP

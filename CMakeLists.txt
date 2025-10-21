@@ -30,6 +30,7 @@ add_subdirectory(tests)
 
 
 include(FetchContent)
+
 set(ASSIMP_BUILD_TESTS OFF)
 set(ASSIMP_INSTALL OFF)
 FetchContent_Declare(

@@ -2,5 +2,4 @@ add_library(TankLib tank.cpp keycontrolls.cpp camercontrolls.cpp landscape.cpp W
 
 target_include_directories(TankLib PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-target_link_libraries(TankLib PUBLIC threepp::threepp)
-target_link_libraries(TankLib PUBLIC assimp::assimp)
+target_link_libraries(TankLib PUBLIC threepp::threepp assimp::assimp)
