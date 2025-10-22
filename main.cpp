@@ -6,6 +6,8 @@
 #include "landscape.hpp"
 #include "WindowResize.hpp"
 #include "camercontrolls.hpp"
+#include <random>
+
 
 int main() {
     using namespace threepp;
@@ -57,16 +59,26 @@ int main() {
         scene->add(road);
     }
 
-    for (int x = -200; x <= 200; x+=200) {
+   /* for (int x = -200; x <= 200; x+=200) {
         for (int z = -200; z <= 200; z += 200) {
             land.add_tree(Vector3(x, 0, z));
-        }
-    }
+        }*/
+
+ int num_trees {20};
+
+for (int i = 0; i <num_trees; i++) {
+    float random_x = (rand() % 500) - 250;
+
+    float random_z = (rand() % 500) -250;
+
+    land.add_tree(Vector3(random_x,0, random_z));
+
+}
+
 
     for (const auto &tree : land.objects) {
         scene->add(tree);
     }
-
 
     Clock clock;
     canvas.animate([&] {
