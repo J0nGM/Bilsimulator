@@ -8,6 +8,7 @@
 #include "threepp/input/KeyListener.hpp"
 #include <cmath>
 #include   "threepp/loaders/AssimpLoader.hpp"
+#include "landscape.hpp" //For å fiske collsion med landskapet
 
 using namespace threepp;
 
@@ -15,6 +16,7 @@ using namespace threepp;
 class Key_controlls : public KeyListener {
 private:
     Object3D *obj_;
+    Landscape* landscape_ = nullptr; //For kollisjon
     Vector3 initial_position_;
     Quaternion initial_rotation_;//Fiks dette
 
@@ -27,7 +29,7 @@ private:
     } key_state_;
 
     float speed_ = 0.0f;
-    float max_Speed_ = 20.0f; //Farten på W/S
+    float max_Speed_ = 40.0f; //Farten på W/S
     float accleration_ = 10.0f;
     float deaccleration_ = 30.0f;
 
@@ -45,6 +47,7 @@ public:
 
     void onKeyReleased(KeyEvent evt) override;
 
+    void setLandscape(Landscape *land);
 
     void update(float dt);
 };

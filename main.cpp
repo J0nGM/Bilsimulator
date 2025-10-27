@@ -7,7 +7,7 @@
 #include "WindowResize.hpp"
 #include "camercontrolls.hpp"
 #include <random>
-
+#include <cmath>
 
 int main() {
     using namespace threepp;
@@ -32,15 +32,14 @@ int main() {
     scene->add(light);
 
 
-
     Tank tank("../assets/3Dmodell/viecal/Tank.glb");
 
     tank.position.y = 5.0f;
     scene->add(tank);
 
-    Box3 bb;
+   /* Box3 bb;
+    bb.setFromObject(tank);*/
 
-    bb.setFromObject(tank);
 
 
     Key_controlls key_controls(tank);
@@ -59,31 +58,25 @@ int main() {
         scene->add(road);
     }
 
-   /* for (int x = -200; x <= 200; x+=200) {
-        for (int z = -200; z <= 200; z += 200) {
-            land.add_tree(Vector3(x, 0, z));
-        }*/
+    int num_trees{20};
 
- int num_trees {20};
+    for (int i = 0; i < num_trees; i++) {
+        float random_x = (rand() % 500) - 250;
+        float random_z = (rand() % 500) - 250;
+        land.add_tree(Vector3(random_x, 0, random_z));
+    }
 
-for (int i = 0; i <num_trees; i++) {
-    float random_x = (rand() % 500) - 250;
-
-    float random_z = (rand() % 500) -250;
-
-    land.add_tree(Vector3(random_x,0, random_z));
-
-}
-
-
-    for (const auto &tree : land.objects) {
+    for (const auto &tree: land.objects) {
         scene->add(tree);
     }
+
+    key_controls.setLandscape(&land);
 
     Clock clock;
     canvas.animate([&] {
         double dt = clock.getDelta();
         key_controls.update(dt);
+
         camera_follow.update(static_cast<float>(dt));
 
         renderer.render(*scene, camera);
@@ -91,3 +84,5 @@ for (int i = 0; i <num_trees; i++) {
 
     return 0;
 }
+
+
