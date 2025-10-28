@@ -1,4 +1,4 @@
-add_library(TankLib tank.cpp keycontrolls.cpp camercontrolls.cpp landscape.cpp WindowResize.cpp)
+add_library(TankLib tank.cpp keycontrolls.cpp camercontrolls.cpp landscape.cpp WindowResize.cpp collision.cpp)
 
 target_include_directories(TankLib PUBLIC ${CMAKE_SOURCE_DIR}/include)
 

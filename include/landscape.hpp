@@ -27,6 +27,5 @@ public:
 
     Landscape();
     void add_tree(threepp::Vector3 position);
-    bool check_collision_box(threepp::Box3 tank_box);
 };
 #endif //TANK_lANDSCAPE_HPP

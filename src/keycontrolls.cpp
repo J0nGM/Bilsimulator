@@ -1,7 +1,5 @@
 #include "keycontrolls.hpp"
 
-#include "../cmake-build-debug/_deps/assimp-src/contrib/Open3DGC/o3dgcVector.h"
-
 Key_controlls::Key_controlls(Object3D &obj) : obj_(&obj),
                                               initial_position_(obj.position),
                                               initial_rotation_(obj.quaternion) {
@@ -15,9 +13,6 @@ int Key_controlls::get_direction_moved() const {
     if (key_state_.up) return 1;
     if (key_state_.down) return -1;
     return 0;
-}
-void Key_controlls::setLandscape(Landscape *land){
-    landscape_ = land;
 }
 
 
@@ -71,13 +66,4 @@ void Key_controlls::update(float dt) {
     if (key_state_.right) obj_->rotateY(-angel_Speed_ * dt);
     if (key_state_.left) obj_->rotateY(angel_Speed_ * dt);
 
-    if (landscape_) {
-        Box3 bb;
-        bb.setFromObject(*obj_);
-
-        if (landscape_->check_collision_box(bb)) {
-            obj_->position.copy(old_position);
-        }
-
-    }
 }

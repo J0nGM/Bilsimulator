@@ -8,6 +8,7 @@
 #include "camercontrolls.hpp"
 #include <random>
 #include <cmath>
+#include "collision.hpp"
 
 int main() {
     using namespace threepp;
@@ -58,6 +59,7 @@ int main() {
         scene->add(road);
     }
 
+    //Lagern en for løkke som generere trær helt randomt på landskapet
     int num_trees{20};
 
     for (int i = 0; i < num_trees; i++) {
@@ -70,13 +72,17 @@ int main() {
         scene->add(tree);
     }
 
-    key_controls.setLandscape(&land);
-
     Clock clock;
     canvas.animate([&] {
         double dt = clock.getDelta();
+        Vector3 old_position = tank.position;
         key_controls.update(dt);
-
+        //Sjekker etter kollisjon
+        Box3 bb;
+        bb.setFromObject(tank);
+        if (collision::check_collision(bb, land.objects)) {
+            tank.position = old_position;
+        }
         camera_follow.update(static_cast<float>(dt));
 
         renderer.render(*scene, camera);

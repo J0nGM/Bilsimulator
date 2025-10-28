@@ -55,32 +55,3 @@ Landscape::Landscape() {
         tree->position.copy(position);
         objects.push_back(tree);
 }
-
-bool Landscape::check_collision_box(threepp::Box3 tank_box) {
-    for (const auto&tree : objects){
-        if (!tree->children.empty()) {
-            auto trunk = tree->children[0];
-
-            Box3 trunk_box;
-            trunk_box.setFromObject(*trunk);
-
-            float shrink_amount = 8.0f;
-            Vector3 min = trunk_box.min();
-            Vector3 max = trunk_box.max();
-
-            min.x += shrink_amount;
-            min.z += shrink_amount;
-            max.x -= shrink_amount;
-            max.z -= shrink_amount;
-
-            trunk_box.set(min, max);
-
-            if (tank_box.intersectsBox(trunk_box)) {
-                std::cout << "Collision detected!" << std::endl;
-                return true;
-
-            }
-        }
-    }
-    return false;
-}

@@ -4,11 +4,8 @@
 #include <iostream>
 #include <threepp/threepp.hpp>
 #include "threepp/loaders/AssimpLoader.hpp"
-#include <iostream>
 #include "threepp/input/KeyListener.hpp"
 #include <cmath>
-#include   "threepp/loaders/AssimpLoader.hpp"
-#include "landscape.hpp" //For å fiske collsion med landskapet
 
 using namespace threepp;
 
@@ -16,7 +13,6 @@ using namespace threepp;
 class Key_controlls : public KeyListener {
 private:
     Object3D *obj_;
-    Landscape* landscape_ = nullptr; //For kollisjon
     Vector3 initial_position_;
     Quaternion initial_rotation_;//Fiks dette
 
@@ -46,8 +42,6 @@ public:
     void onKeyPressed(KeyEvent evt) override;
 
     void onKeyReleased(KeyEvent evt) override;
-
-    void setLandscape(Landscape *land);
 
     void update(float dt);
 };
