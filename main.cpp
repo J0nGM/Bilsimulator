@@ -9,6 +9,7 @@
 #include <random>
 #include <cmath>
 #include "collision.hpp"
+#include "doublespeed.hpp"
 
 int main() {
     using namespace threepp;
@@ -41,8 +42,6 @@ int main() {
    /* Box3 bb;
     bb.setFromObject(tank);*/
 
-
-
     Key_controlls key_controls(tank);
     canvas.addKeyListener(key_controls);
     std::cout << "Press 'r' to reset tank position. Use WASD keys to steer tank" << std::endl;
@@ -58,18 +57,31 @@ int main() {
     for (const auto &road: land.roads) {
         scene->add(road);
     }
-
+    std::vector<std::unique_ptr<power_up_dbs>> powerups;
     //Lagern en for løkke som generere trær helt randomt på landskapet
     int num_trees{20};
-
+    //Hjelp fra AI for å generere random trær
     for (int i = 0; i < num_trees; i++) {
         float random_x = (rand() % 500) - 250;
         float random_z = (rand() % 500) - 250;
         land.add_tree(Vector3(random_x, 0, random_z));
+
+
     }
 
     for (const auto &tree: land.objects) {
         scene->add(tree);
+    }
+
+    int num_powerups{5};
+    for (int i = 0; i < num_powerups; i++) {
+        float random_x = (rand() % 400) - 200;
+        float random_z = (rand() % 400) - 200;
+
+        auto double_speed_powerup = std::make_unique<power_up_dbs>(Vector3(random_x, 3.0f, random_z));
+        scene->add(double_speed_powerup->getMesh());
+        powerups.push_back(std::move(double_speed_powerup));
+
     }
 
     Clock clock;
@@ -83,6 +95,23 @@ int main() {
         if (collision::check_collision(bb, land.objects)) {
             tank.position = old_position;
         }
+        Vector3 tank_center;
+        bb.getCenter(tank_center);
+        for (auto& powerup : powerups)
+            if (!powerup->is_collcted()) {
+                powerup->update(static_cast<float>(dt));
+
+                Vector3 powerup_pos = powerup->get_Position();
+                float dx = tank_center.x - powerup_pos.x;
+                float dy = tank_center.y - powerup_pos.y;
+                float dz = tank_center.z - powerup_pos.z;
+                float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
+
+                if (distance < 5.0f) { //Hvis tanksen er nærme nok powerupen
+                    powerup->collect();
+                    key_controls.speed_boost_activated();
+                }
+            }
         camera_follow.update(static_cast<float>(dt));
 
         renderer.render(*scene, camera);

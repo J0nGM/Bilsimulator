@@ -47,9 +47,21 @@ void Key_controlls::onKeyReleased(KeyEvent evt) {
 }
 
 void Key_controlls::update(float dt) {
+    if (boost_timer_ > 0.0f) {
+        boost_timer_ -= dt;
+
+        if (boost_timer_ <= 0.0f) {
+            speed_multiplier_ = 1.0f;
+            std::cout << "Boost has ended" << std::endl;
+        }
+    }
+
     int move_Direction = 0;
     if (key_state_.up) move_Direction = 1;
     else if (key_state_.down) move_Direction = -1;
+
+    float acctual_speed = speed_ * speed_multiplier_;
+
     // Acceleration and deceleration
     if (move_Direction != 0) {
         speed_ += accleration_ * dt;
@@ -61,9 +73,15 @@ void Key_controlls::update(float dt) {
 
     Vector3 old_position = obj_->position;
     //bevegelse
-    if (move_Direction != 0) obj_->translateX(-speed_ * move_Direction * dt);
+    if (move_Direction != 0) obj_->translateX(-acctual_speed * move_Direction * dt);
     //rotasjon
     if (key_state_.right) obj_->rotateY(-angel_Speed_ * dt);
     if (key_state_.left) obj_->rotateY(angel_Speed_ * dt);
 
+}
+
+void Key_controlls::speed_boost_activated() {
+    speed_multiplier_ = 2.0f;
+    boost_timer_ = boost_duration_;
+    std::cout << "Speed boost is activated!" << std::endl;
 }

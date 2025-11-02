@@ -31,6 +31,12 @@ private:
 
     float angel_Speed_ {2.5f}; //Farten på A/D
 
+    //for powerupen
+    float speed_multiplier_ {2.0f};//For å kunne endre farten ved powerups
+    float boost_timer_ {0.0f};
+    float boost_duration_ {5.0f};
+
+
 public:
     Key_controlls(Object3D &obj);
 
@@ -44,5 +50,7 @@ public:
     void onKeyReleased(KeyEvent evt) override;
 
     void update(float dt);
+
+    void speed_boost_activated();
 };
 #endif //TANK_KEYCONTROLLS_HPP

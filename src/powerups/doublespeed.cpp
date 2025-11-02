@@ -6,7 +6,7 @@ using namespace threepp;
 power_up_dbs::power_up_dbs(Vector3 position) : initial_y_(position.y) {
     auto geometry = SphereGeometry::create(20, 2, 10);
 
-    //Tatt fra threepp bones eksempel for å lage Meshpongmaterialet
+    //Tatt fra threepp clipping eksempel for å lage Meshpongmaterialet
     auto material = MeshPhongMaterial::create({{"color", Color::yellow},
     {"emissive", Color::orange},
     {"emissiveInentsety", 0.5f}}); //For å gjør powerupen gul med gjenskinn
