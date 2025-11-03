@@ -29,8 +29,12 @@ void Key_controlls::onKeyPressed(KeyEvent evt) {
     //Space for å aktivere boosten
     else if (evt.key == Key::SPACE) {
         key_state_.space = true;
-
-    } else if (evt.key == Key::R) {
+    }
+    //For å skyte
+    else if (evt.key == Key::E) {
+        shoot_pressed_ = true;
+    }
+    else if (evt.key == Key::R) {
         //Legger til en reset knapp for tanksen
         obj_->position.copy(initial_position_);
         obj_->quaternion.copy(initial_rotation_);
@@ -64,7 +68,10 @@ void Key_controlls::update(float dt) {
     else {
         speed_multiplier_ = 1.0f;
     }
-
+    if (shoot_cooldown_ > 0.0f) {
+        shoot_cooldown_ -= dt;
+        std::cout << "Shoot cooldown: " << static_cast<int>(shoot_coodown_time_) << "seconds" << std::endl;
+    }
 
     int move_Direction = 0;
     if (key_state_.up) move_Direction = 1;

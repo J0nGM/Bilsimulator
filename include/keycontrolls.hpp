@@ -41,6 +41,10 @@ private:
 
     int boost_collected_ {0};
 
+    bool shoot_pressed_ {false};
+    float shoot_cooldown_ {0.0f};
+    float shoot_coodown_time_ {0.5f};
+
 public:
     Key_controlls(Object3D &obj);
 
@@ -57,9 +61,17 @@ public:
 
     void speed_boost_activated();
 
+    // For boost powerup
     void add_boost();
     void use_boost();
     int get_collected_boosts() const { return boost_collected_; }
     bool has_activated_boost() const { return boost_timer_ > 0.0f;}
+
+
+    //For skyting
+    bool want_to_shoot() const {return shoot_pressed_;}
+    bool can_shoot() { return shoot_cooldown_ <= 0.0f; }
+    void reset_shoot() {shoot_pressed_ = false;}
+    void start_cooldown() {shoot_cooldown_ = shoot_coodown_time_; }
 };
 #endif //TANK_KEYCONTROLLS_HPP

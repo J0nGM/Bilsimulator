@@ -6,7 +6,8 @@ add_library(
         WindowResize.cpp
         collision.cpp
         powerups/boost.cpp
-        powerups/bullet.cpp)
+        powerups/bullet.cpp
+        ../gamemanger/gamemanger.cpp)
 
 target_include_directories(TankLib PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
