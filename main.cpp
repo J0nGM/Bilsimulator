@@ -76,6 +76,7 @@ int main() {
 
     game_manger game(*scene, tank, key_controls, land, camera_follow);
     game.setup_powerups(8);
+
     Clock clock;
     canvas.animate([&] {
         float dt = clock.getDelta();

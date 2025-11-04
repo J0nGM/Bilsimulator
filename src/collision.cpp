@@ -6,6 +6,7 @@ using namespace threepp;
 //Fått hjelp av Ai for å generer koden, slik at den faktisk fungerer
 bool collision::check_collision(Box3 tank_box, std::vector<std::shared_ptr<threepp::Group>> objects) {
     for (const auto&obj : objects) {
+        if (!obj->visible) continue; //Når trærene blir skutt blir det mulig å kjøre gjennom der de var plassert før.
         Box3 object_box;
 
 
