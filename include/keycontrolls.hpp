@@ -41,6 +41,9 @@ private:
 
     int boost_collected_ {0};
 
+
+    int ammo_{0}; //Ammog I start with
+    int max_ammo_ {30}; //Max ammo I can have
     bool shoot_pressed_ {false};
     float shoot_cooldown_ {0.0f};
     float shoot_coodown_time_ {0.5f};
@@ -67,11 +70,15 @@ public:
     int get_collected_boosts() const { return boost_collected_; }
     bool has_activated_boost() const { return boost_timer_ > 0.0f;}
 
+    void add_ammo(int amount);
+    int get_ammo() const { return ammo_; }
+    bool has_ammo() const {return ammo_ > 0;}
+    void use_ammo()  {if (ammo_ >0) ammo_--; } //Got help from AI for this line
 
     //For skyting
     bool want_to_shoot() const {return shoot_pressed_;}
-    bool can_shoot() { return shoot_cooldown_ <= 0.0f; }
-    void reset_shoot() {shoot_pressed_ = false;}
+    bool can_shoot() { return shoot_cooldown_ <= 0.0f && has_ammo(); }
     void start_cooldown() {shoot_cooldown_ = shoot_coodown_time_; }
+    void reset_shoot() {shoot_pressed_ = false;}
 };
 #endif //TANK_KEYCONTROLLS_HPP

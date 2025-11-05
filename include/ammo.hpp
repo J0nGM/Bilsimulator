@@ -5,12 +5,12 @@
 class ammo {
 private:
     std::shared_ptr<threepp::Mesh>mesh_;
-    float time {0.0f};
+    float lifetime_ {0.0f};
     float initla_y_;
-    bool collected_{ture};
+    bool collected_{false};
 
 public:
-    ammo_powerup(threepp::Vector3 position);
+    ammo(threepp::Vector3 position);
 
     void update(float dt);
     bool is_collected() const {return collected_;}
@@ -20,7 +20,7 @@ public:
         }
     std::shared_ptr<threepp::Mesh> getMesh() {return mesh_;}
 
-    threepp::Vector3 get_Possition() const {return mesh_->position;}
+    threepp::Vector3 get_Position() const {return mesh_->position;}
 };
 
 #endif //TANK_AMMO_HPP

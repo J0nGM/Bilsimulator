@@ -1,16 +1,11 @@
 #include <iostream>
 #include <threepp/threepp.hpp>
 #include "tank.hpp"
-#include "threepp/materials/LineBasicMaterial.hpp"
 #include "keycontrolls.hpp"
 #include "landscape.hpp"
 #include "WindowResize.hpp"
 #include "camercontrolls.hpp"
-#include <random>
 #include <cmath>
-#include "collision.hpp"
-#include "boost.hpp"
-#include "bullet.hpp"
 #include "gamemanger/gamemanger.hpp"
 
 int main() {
@@ -29,7 +24,6 @@ int main() {
     auto light = HemisphereLight::create(0xffffbb, 0x080820);
 
     std::cout << std::filesystem::current_path();
-    std::vector<std::unique_ptr<power_up_boost> > powerups;
 
     auto scene = Scene::create();
     scene->background = Color::aliceblue;
@@ -68,7 +62,6 @@ int main() {
         float random_z = (rand() % 500) - 250;
         land.add_tree(Vector3(random_x, 0, random_z));
     }
-    std::vector<std::unique_ptr<bullet> > bullets;
 
     for (const auto &tree: land.objects) {
         scene->add(tree);
@@ -76,6 +69,7 @@ int main() {
 
     game_manger game(*scene, tank, key_controls, land, camera_follow);
     game.setup_powerups(8);
+    game.setup_ammo(20);
 
     Clock clock;
     canvas.animate([&] {

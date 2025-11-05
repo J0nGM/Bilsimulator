@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 
+
 using namespace threepp;
 
 game_manger::game_manger(
@@ -19,16 +20,19 @@ game_manger::game_manger(
           landscape_(land),
           camera_follow_(camera_follow) {
 }
+//used randomfuction so much that I created a function for it
+threepp::Vector3 game_manger::random_position(float range_x, float y, float range_z) {
+    float random_x = (rand()% static_cast<int>(range_x)) - (range_x / 2);
+    float random_z = (rand()% static_cast<int>(range_z)) - (range_z / 2);
+    return Vector3(random_x, y, random_z);
+}
 
 void game_manger::setup_powerups(int count) {
-    for (int i = 0; i < count; i++) {
-        float random_x = (rand() % 400) - 200;
-        float random_z = (rand() % 400) - 200;
+    spawn_item_pickup(powerups_, count);
+}
 
-        auto powerup_boost = std::make_unique<power_up_boost>(Vector3(random_x, 3.0f, random_z));
-        scene_.add(powerup_boost->getMesh());
-        powerups_.push_back(std::move(powerup_boost));
-    }
+void game_manger::setup_ammo(int count) {
+    spawn_item_pickup(ammo_, count);
 }
 
 void game_manger::handle_tank_movement(float dt) {
@@ -39,6 +43,26 @@ void game_manger::handle_tank_movement(float dt) {
     bb.setFromObject(tank_);
     if (collision::check_collision(bb, landscape_.objects)) {
         tank_.position = old_position;
+    }
+}
+
+void game_manger::handle_ammo_collisions() {
+    Box3 bb;
+    bb.setFromObject(tank_);
+    Vector3 tank_center;
+    bb.getCenter(tank_center);
+
+    for (auto& ammo_pickup: ammo_) {
+        if (!ammo_pickup->is_collected()) {
+            Vector3 ammo_pos = ammo_pickup->get_Position();
+            float distance = calcualte_distance(tank_center, ammo_pos);
+
+            if (distance < 5.0f) {
+                ammo_pickup->collect();
+                key_controlls_.add_ammo(10);
+                std::cout << "Ammo collected" << std::endl;
+            }
+        }
     }
 }
 
@@ -62,6 +86,7 @@ void game_manger::handle_shooting() {
         scene_.add(bullet_ptr->get_mesh());
         bullets_.push_back(std::move(bullet_ptr));
 
+        key_controlls_.use_ammo();
         key_controlls_.start_cooldown();
         key_controlls_.reset_shoot();
 
@@ -109,6 +134,7 @@ void game_manger::handle_powerup_collisions() {
             if (distance < 5.0f) {
                 powerup->collect();
                 key_controlls_.add_boost();
+                std::cout << "Boost collected" << std::endl;
             }
         }
     }
@@ -144,12 +170,18 @@ void game_manger::update(float dt) {
     update_bullets(dt);
     cleanup_bullets();
     handle_powerup_collisions();
+    handle_ammo_collisions();
     bullet_collisions_with_tree();
     camera_follow_.update(dt);
 
     for (auto &powerup: powerups_) {
         if (!powerup->is_collcted()) {
             powerup->update(dt);
+        }
+    }
+    for (auto &ammo: ammo_) {
+        if (!ammo->is_collected()) {
+            ammo->update(dt);
         }
     }
 }

@@ -58,6 +58,13 @@ void Key_controlls::onKeyReleased(KeyEvent evt) {
     }
 }
 
+void Key_controlls::add_ammo(int amount) {
+    ammo_ += amount;
+    if (ammo_ > max_ammo_) ammo_ = max_ammo_;
+    std::cout << "Ammo collected! Current ammo: " << ammo_ << std::endl;
+
+}
+
 void Key_controlls::update(float dt) {
     if (key_state_.space && boost_time_left_ > 0.0f) {
         boost_time_left_ -= dt;
@@ -90,7 +97,8 @@ void Key_controlls::update(float dt) {
 
     Vector3 old_position = obj_->position;
     //bevegelse
-    if (move_Direction != 0) obj_->translateX(-acctual_speed * move_Direction * dt);
+    if (move_Direction != 0)
+        obj_->translateX(-acctual_speed * move_Direction * dt);
     //rotasjon
     if (key_state_.right) obj_->rotateY(-angel_Speed_ * dt);
     if (key_state_.left) obj_->rotateY(angel_Speed_ * dt);
