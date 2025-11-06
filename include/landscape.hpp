@@ -1,7 +1,3 @@
-//
-// Created by L14 G5 on 10/11/2025.
-//
-
 #ifndef TANK_LANDSCAPE_HPP
 #define TANK_LANDSCAPE_HPP
 #include <iostream>

@@ -3,7 +3,7 @@
 
 using namespace threepp;
 
-power_up_boost::power_up_boost(Vector3 position) : initial_y_(position.y) {
+power_up_boost::power_up_boost(Vector3 position) : initial_y_(position.y) {//From threepp examples/SphereGeometry
     auto geometry = SphereGeometry::create(2, 32, 32);
 
     //Tatt fra threepp clipping eksempel for å lage Meshpongmaterialet

@@ -68,8 +68,8 @@ int main() {
     }
 
     game_manger game(*scene, tank, key_controls, land, camera_follow);
-    game.setup_powerups(8);
-    game.setup_ammo(20);
+    game.setup_powerups(8); //Ammount of boots can pickup in the game
+    game.setup_ammo(8); //Ammount ammo you get for when picked up
 
     Clock clock;
     canvas.animate([&] {

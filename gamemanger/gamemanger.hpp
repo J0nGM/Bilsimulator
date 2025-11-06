@@ -12,7 +12,7 @@
 #include "boost.hpp"
 #include "bullet.hpp"
 #include "ammo.hpp"
-
+#include "portalLVL2.hpp"
 class game_manger {
 private:
     threepp::Scene& scene_;
@@ -24,6 +24,10 @@ private:
     std::vector<std::unique_ptr<power_up_boost>> powerups_;
     std::vector<std::unique_ptr<ammo>> ammo_;
     std::vector<std::unique_ptr<bullet>> bullets_;
+
+    std::unique_ptr<portal_lvl2> portal_;
+    int current_level_ {1};
+    bool level_completed_ {false};
 
 
 public:
@@ -38,6 +42,11 @@ public:
     void setup_ammo(int num_ammo);
     void update(float dt);
 
+    bool all_trees_destroyed() const;
+    int get_current_level() const { return current_level_;}
+    bool is_level_completed() const { return level_completed_;}
+
+
 private:
     void handle_tank_movement(float dt);
     void handle_shooting();
@@ -46,6 +55,11 @@ private:
     void handle_powerup_collisions();
     void handle_ammo_collisions();
     void bullet_collisions_with_tree();
+
+    void check_portal_spawn();
+    void portal_entry();
+    void load_level_2();
+    void clean_level();
 
     float calcualte_distance(
         const threepp::Vector3& pos1,
@@ -57,7 +71,7 @@ private:
 
     threepp::Vector3 random_position(float range_x = 400.0f, float y = 3.0f, float range_z = 400.0f);
 
-    //AI helped me created this funciton, so that it can be used for any object type
+    //AI got littel assistance with creating this funciton, so that it can be used for any object type
 template<typename T>
     void spawn_item_pickup(std::vector<std::unique_ptr<T>>& container, int count) {
     for (int i = 0; i < count; i++) {

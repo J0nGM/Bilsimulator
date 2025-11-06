@@ -8,8 +8,10 @@ private:
     float lifetime_ {0.0f};
     float initla_y_;
     bool collected_{false};
+    int amount_ammo_per_pickup_{5};
 
 public:
+
     ammo(threepp::Vector3 position);
 
     void update(float dt);
@@ -18,9 +20,12 @@ public:
         collected_ = true;
         mesh_->visible = false;
         }
-    std::shared_ptr<threepp::Mesh> getMesh() {return mesh_;}
 
+    int get_ammo_amount() const{ return amount_ammo_per_pickup_; }
+
+    std::shared_ptr<threepp::Mesh> getMesh() {return mesh_;}
     threepp::Vector3 get_Position() const {return mesh_->position;}
+
 };
 
 #endif //TANK_AMMO_HPP

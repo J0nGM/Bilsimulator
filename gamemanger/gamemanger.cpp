@@ -20,7 +20,7 @@ game_manger::game_manger(
           landscape_(land),
           camera_follow_(camera_follow) {
 }
-//used randomfuction so much that I created a function for it
+//Used randomfuction so much that I created a function for it
 threepp::Vector3 game_manger::random_position(float range_x, float y, float range_z) {
     float random_x = (rand()% static_cast<int>(range_x)) - (range_x / 2);
     float random_z = (rand()% static_cast<int>(range_z)) - (range_z / 2);
@@ -59,8 +59,8 @@ void game_manger::handle_ammo_collisions() {
 
             if (distance < 5.0f) {
                 ammo_pickup->collect();
-                key_controlls_.add_ammo(10);
-                std::cout << "Ammo collected" << std::endl;
+                key_controlls_.add_ammo(ammo_pickup->get_ammo_amount());
+                std::cout << "Ammo collected, you have: " << key_controlls_.get_ammo() << " bullets" << std::endl;
             }
         }
     }
@@ -139,7 +139,7 @@ void game_manger::handle_powerup_collisions() {
         }
     }
 }
-//Fikk assistanse fra AI her
+//Got assistens from AI to create this function
 void game_manger::bullet_collisions_with_tree() {
     for (auto& bullet: bullets_) {
         if (!bullet->is_active()) continue;
@@ -163,6 +163,75 @@ void game_manger::bullet_collisions_with_tree() {
     }
 }
 
+bool game_manger::all_trees_destroyed() const {
+    for (const auto& tree : landscape_.objects) {
+        if (tree->visible) {    //If any trees are still visible
+            return false;
+        }
+    }
+    return true; //When all trees are gone
+}
+
+void game_manger::check_portal_spawn() {
+    if (!portal_ && all_trees_destroyed()) {
+        Vector3 portal_position(0, 5,0);
+        portal_ = std::make_unique<portal_lvl2>(portal_position);
+        scene_.add(portal_->get_mesh());
+        std::cout << "Portal spawned!" << std::endl;
+    }
+}
+
+void game_manger::portal_entry() {
+    if (!portal_) return;
+
+    Box3 bb;
+    bb.setFromObject(tank_);
+    Vector3 tank_center;
+    bb.getCenter(tank_center);
+
+    Vector3 portal_pos = portal_->get_position();
+    float distance_ = calcualte_distance(tank_center, portal_pos);
+
+    if (distance_ < 5.0f && portal_->is_activated()) {
+        load_level_2();
+    }
+}
+
+void game_manger::clean_level() {
+    for (auto& bullet: bullets_) {
+        scene_.remove(*bullet->get_mesh());
+    }
+    bullets_.clear();
+
+    for (auto& tree : landscape_.objects) {
+        scene_.remove(*tree);
+    }
+    landscape_.objects.clear();
+
+    for (auto& powerup: powerups_) {
+        scene_.remove(*powerup->getMesh());
+    }
+    powerups_.clear();
+
+    for (auto& ammo: ammo_) {
+        scene_.remove(*ammo->getMesh());
+    }
+    ammo_.clear();
+}
+
+
+void game_manger::load_level_2() {
+    level_completed_ = true;
+    current_level_ = 2;
+    clean_level();
+
+    tank_.position.set(0, 5, 0);
+    tank_.rotation.set(0,0,0);
+
+    setup_powerups(5);
+    setup_ammo(5);
+}
+
 
 void game_manger::update(float dt) {
     handle_tank_movement(dt);
@@ -173,6 +242,12 @@ void game_manger::update(float dt) {
     handle_ammo_collisions();
     bullet_collisions_with_tree();
     camera_follow_.update(dt);
+    check_portal_spawn();
+    portal_entry();
+
+    if (portal_) {
+        portal_->update(dt);
+    }
 
     for (auto &powerup: powerups_) {
         if (!powerup->is_collcted()) {
