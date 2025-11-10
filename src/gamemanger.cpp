@@ -1,9 +1,9 @@
 #include "gamemanger.hpp"
 #include "collision.hpp"
-#include "gamemanger.hpp"
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
+
 
 
 using namespace threepp;
@@ -56,7 +56,7 @@ void game_manger::handle_ammo_collisions() {
     for (auto &ammo_pickup: ammo_) {
         if (!ammo_pickup->is_collected()) {
             Vector3 ammo_pos = ammo_pickup->get_Position();
-            float distance = calcualte_distance(tank_center, ammo_pos);
+            float distance = calculate_distance(tank_center, ammo_pos);
 
             if (distance < 5.0f) {
                 ammo_pickup->collect();
@@ -150,7 +150,7 @@ void game_manger::bullet_collisions_with_tree() {
         for (auto &tree: landscape_.objects) {
             if (!bullet->is_active()) continue;
             Vector3 tree_pos = tree->position;
-            float distance = calcualte_distance(bullet_pos, tree_pos);
+            float distance = calculate_distance(bullet_pos, tree_pos);
 
             if (distance < 5.0f) {
                 tree->visible = false;
@@ -193,7 +193,7 @@ void game_manger::portal_entry() {
     bb.getCenter(tank_center);
 
     Vector3 portal_pos = portal_->get_position();
-    float distance_ = calcualte_distance(tank_center, portal_pos);
+    float distance_ = calculate_distance(tank_center, portal_pos);
 
     if (distance_ < 10.0f && portal_->is_activated()) {
         load_level_2();

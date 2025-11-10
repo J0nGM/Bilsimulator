@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 
+
 using namespace threepp;
 
 ammo::ammo(Vector3 position) : initla_y_(position.y){

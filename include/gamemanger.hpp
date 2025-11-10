@@ -14,6 +14,7 @@
 #include "ammo.hpp"
 #include "portalLVL2.hpp"
 #include "landscape2.hpp"
+#include "enemy.hpp"
 
 class game_manger {
 private:
@@ -26,6 +27,12 @@ private:
     std::vector<std::unique_ptr<power_up_boost>> powerups_;
     std::vector<std::unique_ptr<ammo>> ammo_;
     std::vector<std::unique_ptr<bullet>> bullets_;
+
+    std::vector<bullet> enemy_bullets_;
+    std::vector<std::unique_ptr<Enemy>> enemies_;
+
+    int player_hp_ {3};
+    bool game_over_ {false};
 
     std::unique_ptr<portal_lvl2> portal_;
     int current_level_ {1};
@@ -51,6 +58,13 @@ public:
     int get_current_level() const { return current_level_;}
     bool is_level_completed() const { return level_completed_;}
 
+    void setup_enemies(int count);
+    void update_enemies(float dt);
+    void update_enemy_bullets(float dt);
+    void check_player_hit();
+
+    int get_player_hp() const { return player_hp_; }
+    bool is_game_over() const {return game_over_;}
 
 
 private:
@@ -67,7 +81,7 @@ private:
     void load_level_2();
     void clean_level();
 
-    float calcualte_distance(
+    float calculate_distance(
         const threepp::Vector3& pos1,
         const threepp::Vector3& pos2) {
         float dx = pos1.x - pos2.x;
