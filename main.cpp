@@ -6,7 +6,7 @@
 #include "WindowResize.hpp"
 #include "camercontrolls.hpp"
 #include <cmath>
-#include "gamemanger/gamemanger.hpp"
+#include "gamemanger.hpp"
 
 int main() {
     using namespace threepp;
