@@ -18,10 +18,9 @@ power_up_boost::power_up_boost(Vector3 position) : initial_y_(position.y) {//Fro
 }
 
 void power_up_boost::update(float dt){
+    //So that the powerup moves up and down
     time_ += dt;
-    //Slik at powerupen beveger seg opp og ned
-     //fikk help av AI for å få den til å bevege seg opp og ned
     mesh_->rotation.y += 2*dt;
-    mesh_->position.y = initial_y_ + std::sin(time_)*0.5f;
+    mesh_->position.y = initial_y_ - std::sin(time_)*1.5f;
 
 }

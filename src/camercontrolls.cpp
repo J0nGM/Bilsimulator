@@ -1,7 +1,9 @@
 #include "camercontrolls.hpp"
 
 Camera_follow::Camera_follow(PerspectiveCamera &camera, Object3D &target, Key_controlls &controls,
-                             const Vector3 &base_offset) : camera_(camera), target_(target), controls_(controls),
+                             const Vector3 &base_offset) : camera_(camera),
+                                                           target_(target),
+                                                           controls_(controls),
                                                            base_offset_(base_offset) {
 }
 

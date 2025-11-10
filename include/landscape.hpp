@@ -6,7 +6,7 @@
 
 class Landscape {
 private:
-    //For å endre på trærene
+    //To cahnge the size of the trees
     const float height_tree_ {10.0f};
     const float tree_log_radius_ {2.0f};
     const float tree_log_height_ {15.0f};

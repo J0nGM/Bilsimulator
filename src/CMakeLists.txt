@@ -10,6 +10,7 @@ add_library(
         powerups/ammo.cpp
         level2/portalLVL2.cpp
         level2/landscape2.cpp
+        level2/enemy.cpp
         ../gamemanger/gamemanger.cpp)
 
 target_include_directories(TankLib PUBLIC ${CMAKE_SOURCE_DIR}/include)

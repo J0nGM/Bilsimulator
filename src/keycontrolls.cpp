@@ -30,7 +30,7 @@ void Key_controlls::onKeyPressed(KeyEvent evt) {
     else if (evt.key == Key::SPACE) {
         key_state_.space = true;
     }
-    //For å skyte
+    //To shoot
     else if (evt.key == Key::E) {
         shoot_pressed_ = true;
     }

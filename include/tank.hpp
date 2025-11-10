@@ -1,4 +1,4 @@
-#pragma once //Fikk hjelp av AI for dettte
+#pragma once //endre denne ettervert
 
 #include <threepp/threepp.hpp>
 #include "threepp/loaders/AssimpLoader.hpp"

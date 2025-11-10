@@ -21,7 +21,7 @@ game_manger::game_manger(
       camera_follow_(camera_follow) {
 }
 
-//Used randomfuction so much that I created a function for it
+//Created a randomfunction, got assistanse from AI
 threepp::Vector3 game_manger::random_position(float range_x, float y, float range_z) {
     float random_x = (rand() % static_cast<int>(range_x)) - (range_x / 2);
     float random_z = (rand() % static_cast<int>(range_z)) - (range_z / 2);
@@ -61,7 +61,7 @@ void game_manger::handle_ammo_collisions() {
             if (distance < 5.0f) {
                 ammo_pickup->collect();
                 key_controlls_.add_ammo(ammo_pickup->get_ammo_amount());
-                std::cout << "Ammo collected, you have: " << key_controlls_.get_ammo() << " bullets" << std::endl;
+                std::cout << "Shoot - Bullet: " << key_controlls_.get_ammo() << std::endl;
             }
         }
     }
@@ -70,10 +70,9 @@ void game_manger::handle_ammo_collisions() {
 void game_manger::handle_shooting() {
     if (key_controlls_.want_to_shoot() && key_controlls_.can_shoot()) {
         Vector3 forward(0, 0, -1);
-        //Fikk hjelp med AI for Quaternion delen her.
-        forward.applyQuaternion(tank_.quaternion);
 
-        //Found the code from the webiste (threejs.org/docs/#Quaternion)
+        //Found the code exampel from the webiste (threejs.org/docs/#Quaternion)
+        forward.applyQuaternion(tank_.quaternion);
         Quaternion rotation;
         rotation.setFromAxisAngle(Vector3(0, 1, 0), math::PI / 2);
         forward.applyQuaternion(rotation);
@@ -82,7 +81,7 @@ void game_manger::handle_shooting() {
         spawn_position.y += 7.0f;
         spawn_position.addScaledVector(forward, 5.0f);
 
-        auto bullet_ptr = std::make_unique<bullet>(spawn_position, forward, 200.0f); //endre fart på bullet
+        auto bullet_ptr = std::make_unique<bullet>(spawn_position, forward, 200.0f); //CHanges speed for the bullet
 
         scene_.add(bullet_ptr->get_mesh());
         bullets_.push_back(std::move(bullet_ptr));
@@ -186,6 +185,7 @@ void game_manger::check_portal_spawn() {
 
 void game_manger::portal_entry() {
     if (!portal_) return;
+    if (current_level_ ==2) return; //So that I don't load the level multiple times when entering the portal
 
     Box3 bb;
     bb.setFromObject(tank_);
@@ -199,7 +199,7 @@ void game_manger::portal_entry() {
         load_level_2();
     }
 }
-
+//Got some help from AI for the clean level function
 void game_manger::clean_level() {
     for (auto &bullet: bullets_) {
         scene_.remove(*bullet->get_mesh());
@@ -237,8 +237,8 @@ void game_manger::load_level_2() {
     tank_.position.set(0, 5, 0);
     tank_.rotation.set(0, 0, 0);
 
-    setup_powerups(5);
-    setup_ammo(5);
+    setup_powerups(7);
+    setup_ammo(10);
 
     auto ground_geometry = PlaneGeometry::create(750, 750);
     auto ground_material = MeshPhongMaterial::create();
@@ -250,6 +250,9 @@ void game_manger::load_level_2() {
     level2_ground_->receiveShadow = true;
     scene_.add(level2_ground_);
 
+    if (current_level_ == 2) {
+        portal_->get_mesh()->visible = false; //so that the protal disspears when I etner level 2
+    }
 }
 
 

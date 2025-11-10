@@ -58,8 +58,8 @@ int main() {
     int num_trees{1};
     //Hjelp fra AI for å generere random trær
     for (int i = 0; i < num_trees; i++) {
-        float random_x = (rand() % 500) - 250;
-        float random_z = (rand() % 500) - 250;
+        const float random_x = (rand() % 500) - 250;
+        const float random_z = (rand() % 500) - 250;
         land.add_tree(Vector3(random_x, 0, random_z));
     }
 
