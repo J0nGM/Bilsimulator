@@ -239,6 +239,7 @@ void game_manger::load_level_2() {
 
     setup_powerups(7);
     setup_ammo(10);
+    setup_enemies(5);
 
     auto ground_geometry = PlaneGeometry::create(750, 750);
     auto ground_material = MeshPhongMaterial::create();
@@ -254,9 +255,122 @@ void game_manger::load_level_2() {
         portal_->get_mesh()->visible = false; //so that the protal disspears when I etner level 2
     }
 }
+void game_manger::setup_enemies(int count) {
+    for (int i = 0; i < count; i++) {
+        const float random_x = (rand() % 400) - 200;
+        const float random_z = (rand() % 400) - 200;
+
+        auto enemy_ptr = std::make_unique<Enemy>(Vector3(random_x, 2.5f, random_z));
+        scene_.add(enemy_ptr->get_mesh());
+        enemies_.push_back(std::move(enemy_ptr));
+    }
+}
+
+void game_manger::update_enemies(float dt) {
+    for (auto& enemy : enemies_) {
+        if (!enemy->is_damaged()) {
+            enemy->update(dt);
+        }
+    }
+}
+//Got help from AI for this part
+void game_manger::update_enemy_bullets(float dt) {
+    for (auto& bullets : enemy_bullets_) {
+        if (bullets->is_active()) {
+            bullets->update(dt);
+        }
+    }
+    enemy_bullets_.erase(
+        std::remove_if(enemy_bullets_.begin(), enemy_bullets_.end(),
+            [&](auto &bullets) {
+                if (!bullets->is_active()) {
+                    scene_.remove(*bullets->get_mesh());
+                    return true;
+                }
+                return false;
+            }
+            ),
+            enemy_bullets_.end()
+            );
+}
+
+void game_manger::enemy_shooting() {
+    for (auto& enemy : enemies_) {
+        if (enemy->should_shoot()) {
+            Vector3 enemy_pos = enemy->get_position();
+
+            Vector3 direction = tank_.position;
+            direction.sub(enemy_pos);
+            direction.y = 0;
+            direction.normalize();
+
+            Vector3 spawn_position = enemy_pos;
+            spawn_position.y += 3.0f;
+            auto enemy_bullet_ptr = std::make_unique<bullet>(spawn_position, direction, 150.0f);
+            scene_.add(enemy_bullet_ptr->get_mesh());
+            enemy_bullets_.push_back(std::move(enemy_bullet_ptr));
+        }
+    }
+}
+
+void game_manger::check_player_hit() {
+    if (game_over_) return;
+    Box3 tank_bb;
+    tank_bb.setFromObject(tank_);
+    Vector3 tank_center;
+    tank_bb.getCenter(tank_center);
+
+    for (auto& bullet : enemy_bullets_) {
+        if (!bullet->is_active()) continue;
+
+        Vector3 bullet_pos = bullet->get_position();
+        float distance = calculate_distance(tank_center, bullet_pos);
+
+        if (distance < 5.0f) {
+            bullet->deactivate();
+            player_hp_--;
+            for (int i = 0; i < player_hp_; i++) {
+            }
+            std::cout << "Player hit. HP: " << player_hp_ << std::endl;
+
+            if (player_hp_ <= 0) {
+                game_over_ = true;
+                std::cout << "Game Over!" << std::endl;
+            }
+            break;
+        }
+    }
+
+}
+
+void game_manger::check_enemy_hit() {
+    for (auto& bullet : bullets_) {
+        if (!bullet->is_active()) continue;
+
+        Vector3 bullet_pos = bullet->get_position();
+        for (auto& enemy : enemies_) {
+            if (enemy->is_damaged()) continue;
+
+            Vector3 enemy_pos = enemy->get_position();
+            float distance = calculate_distance(bullet_pos, enemy_pos);
+
+            if (distance < 5.0f) {
+                enemy->take_damage();
+                bullet->deactivate();
+                break;
+            }
+        }
+    }
+
+}
+
 
 
 void game_manger::update(float dt) {
+    if (game_over_) {
+        return;
+    }
+
     handle_tank_movement(dt);
     handle_shooting();
     update_bullets(dt);
@@ -266,6 +380,15 @@ void game_manger::update(float dt) {
     bullet_collisions_with_tree();
     check_portal_spawn();
     portal_entry();
+
+    if (current_level_ == 2) {
+        update_enemies(dt);
+        enemy_shooting();
+        update_enemy_bullets(dt);
+        check_player_hit();
+        check_enemy_hit();
+
+    }
 
     if (portal_) {
         portal_->update(dt);

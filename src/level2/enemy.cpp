@@ -3,9 +3,11 @@
 using namespace threepp;
 
 Enemy::Enemy(threepp::Vector3 position) : position_(position) {
-    auto body_geometry = CylinderGeometry::create(3,3,5);
+    auto body_geometry = CylinderGeometry::create(3,3,15);
     auto body_material = MeshStandardMaterial::create();
     body_material->color = Color::red;
+    body_material->emissive = Color::darkred;
+    body_material->emissiveIntensity = 0.5f;
 
     mesh_ = Mesh::create(body_geometry, body_material);
     mesh_->position.copy(position_);
@@ -15,6 +17,8 @@ Enemy::Enemy(threepp::Vector3 position) : position_(position) {
 void Enemy::update(float dt) {
     if (is_destryd) return;
     shoot_timer_ += dt;
+
+    mesh_->rotation.y += 0.5f * dt;
 }
 
 bool Enemy::should_shoot() {
@@ -27,6 +31,9 @@ bool Enemy::should_shoot() {
 }
 
 void Enemy::take_damage() {
+    if (is_destryd) {
+    return;
+}
     hp_--;
     if (hp_ <= 0) {
         is_destryd = true;

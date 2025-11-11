@@ -28,7 +28,7 @@ private:
     std::vector<std::unique_ptr<ammo>> ammo_;
     std::vector<std::unique_ptr<bullet>> bullets_;
 
-    std::vector<bullet> enemy_bullets_;
+    std::vector<std::unique_ptr<bullet>> enemy_bullets_;
     std::vector<std::unique_ptr<Enemy>> enemies_;
 
     int player_hp_ {3};
@@ -60,8 +60,10 @@ public:
 
     void setup_enemies(int count);
     void update_enemies(float dt);
+    void enemy_shooting();
     void update_enemy_bullets(float dt);
     void check_player_hit();
+    void check_enemy_hit();
 
     int get_player_hp() const { return player_hp_; }
     bool is_game_over() const {return game_over_;}
