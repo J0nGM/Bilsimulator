@@ -71,12 +71,20 @@ add_library(imgui_glfw STATIC
         ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
-target_link_libraries(imgui_glfw PUBLIC threepp::threepp OpenGL::GL)
+target_link_libraries(imgui_glfw PUBLIC
+        threepp::threepp
+        glfw
+        OpenGL::GL
+)
 
 target_include_directories(imgui_glfw PUBLIC
         ${imgui_SOURCE_DIR}
         ${imgui_SOURCE_DIR}/backends
 )
+get_target_property(GLFW_INCLUDES glfw INTERFACE_INCLUDE_DIRECTORIES)
+if(GLFW_INCLUDES)
+    target_include_directories(imgui_glfw PUBLIC ${GLFW_INCLUDES})
+endif()
 
 target_link_libraries(TankSim PUBLIC TankLib imgui_glfw)
 

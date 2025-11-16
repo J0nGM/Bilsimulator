@@ -7,6 +7,7 @@
 #include "camercontrolls.hpp"
 #include <cmath>
 #include "gamemanger.hpp"
+#include "imguihandler.hpp"
 
 int main() {
     using namespace threepp;
@@ -71,11 +72,19 @@ int main() {
     game.setup_powerups(8); //Ammount of boosts I can pickup in the game
     game.setup_ammo(8); //Ammount ammo you get for when picked up
 
+    imgui_handler imgui;
+    imgui.init(reinterpret_cast<GLFWwindow*>(canvas.windowPtr()));
+    std::cout << "✅ ImGui initialized!" << std::endl;
+
     Clock clock;
     canvas.animate([&] {
         float dt = clock.getDelta();
         game.update(dt);
         renderer.render(*scene, camera);
+
+        imgui.begin_frame();
+        imgui.render_ui(game);
+        imgui.end_frame();
     });
 
     return 0;
