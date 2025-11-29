@@ -17,6 +17,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(threepp)
 
+
 set(CATCH2_BUILD_TESTING OFF)
 FetchContent_Declare(
         catch2
@@ -25,11 +26,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(catch2)
 
-
-enable_testing()
-add_subdirectory(tests)
-
-include(FetchContent)
 
 set(ASSIMP_BUILD_TESTS OFF)
 set(ASSIMP_INSTALL OFF)
@@ -41,15 +37,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(assimp)
 
 
-add_subdirectory(src)
-
-add_executable(TankSim main.cpp)
-
-
 #used https://gist.github.com/jeffamstutz/992723dfabac4e3ffff265eb71a24cd9 for imgui
-include(FetchContent)
-
-
 FetchContent_Declare(
         imgui
         URL https://github.com/ocornut/imgui/archive/docking.zip
@@ -57,9 +45,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
-
 find_package(OpenGL REQUIRED)
-
 
 add_library(imgui_glfw STATIC
         ${imgui_SOURCE_DIR}/imgui.cpp
@@ -86,8 +72,21 @@ if(GLFW_INCLUDES)
     target_include_directories(imgui_glfw PUBLIC ${GLFW_INCLUDES})
 endif()
 
+
+add_subdirectory(src)
+
+add_executable(TankSim main.cpp)
 target_link_libraries(TankSim PUBLIC TankLib imgui_glfw)
 
+
+
+
+enable_testing()
+add_subdirectory(tests)
+
+
 file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+
 
 #Legg til tanrget_compile_definitions(TankSim PRIVATE THREEPP_USE_ASSIMP)
