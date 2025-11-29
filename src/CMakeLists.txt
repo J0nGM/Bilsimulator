@@ -32,6 +32,7 @@ add_library(TankLib
         tankmovment.cpp
         keyinputhandler.cpp
         levelmanger.cpp
+        trailmanager.cpp
 )
 
 

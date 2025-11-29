@@ -6,11 +6,11 @@
 using namespace threepp;
 
 game_manger::game_manger(
-    Scene& scene,
-    Tank& tank,
-    key_input_handler& key_input,
-    Camera_follow& camera_follow,
-    Landscape& landscape1,
+    Scene &scene,
+    Tank &tank,
+    key_input_handler &key_input,
+    Camera_follow &camera_follow,
+    Landscape &landscape1,
     std::function<Vector3(float, float, float)> random_pos_func)
     : scene_(scene),
       tank_(tank),
@@ -22,9 +22,11 @@ game_manger::game_manger(
       pickups_(),
       enemies_(),
       level_mgr_(scene, landscape1, pickups_, enemies_, random_pos_func) {
-
     level_mgr_.setup_level_1();
+
+    trail_manager_ = std::make_unique<trail_manager>(&scene_);
 }
+
 Vector3 game_manger::random_position(float range_x, float y, float range_z) {
     float random_x = (rand() % static_cast<int>(range_x)) - (range_x / 2);
     float random_z = (rand() % static_cast<int>(range_z)) - (range_z / 2);
@@ -39,9 +41,9 @@ void game_manger::reset_tank_position() {
 void game_manger::handle_tank_movement(float dt) {
     Vector3 old_position = tank_.position;
 
-    const auto& keys = key_input_.get_keys();
+    const auto &keys = key_input_.get_keys();
     bool boost_active = keys.space;
-    float boost_mult = tank_attack_.get_boost_multiplier(boost_active);
+    float boost_mult = tank_movement_.get_boost_multiplier(boost_active);
 
     tank_movement_.update(keys, dt, boost_mult);
 
@@ -60,7 +62,7 @@ void game_manger::handle_tank_movement(float dt) {
 }
 
 void game_manger::handle_shooting() {
-    const auto& keys = key_input_.get_keys();
+    const auto &keys = key_input_.get_keys();
 
     if (keys.e && tank_attack_.can_shoot()) {
         Vector3 spawn_pos = tank_.position;
@@ -79,7 +81,7 @@ void game_manger::handle_shooting() {
 void game_manger::update(float dt) {
     if (game_over_) return;
 
-    const auto& keys = key_input_.get_keys();
+    const auto &keys = key_input_.get_keys();
     if (keys.r) {
         reset_tank_position();
     }
@@ -91,10 +93,25 @@ void game_manger::update(float dt) {
     Vector3 tank_center = tank_.position;
     tank_center.y = 3.0f;
 
-    // Update level and get events
     auto events = level_mgr_.update_level(dt, tank_center);
 
-    // Handle player damage
+    if (tank_movement_.get_speed() > 0.3f) {  // Only spawn when tank moves
+        time_since_last_trail_ += dt;
+        if (time_since_last_trail_ >= trail_interval_) {
+
+            //Ai assisted me here. Was struggling to get the right direction for the trail
+            Vector3 right(0, 0, 1); // Tanks local right
+            right.applyQuaternion(tank_.quaternion); //Apply rotation
+            right.normalize();
+            trail_manager_->add_trail(tank_.position, right);
+            time_since_last_trail_ = 0.0f;
+        }
+    }
+
+    trail_manager_->update(dt);
+
+
+    //player damage
     if (events.player_hit) {
         player_hp_--;
         std::cout << "Player hit! HP: " << player_hp_ << std::endl;
@@ -105,13 +122,13 @@ void game_manger::update(float dt) {
         }
     }
 
-    // Check powerup collisions HERE (not in level_manger)
-    level_mgr_.get_pickup_manager().check_collisions(tank_center, tank_attack_);
+    //powerup pickup
+    level_mgr_.get_pickup_manager().check_collisions(tank_center, tank_attack_, tank_movement_);
 
-    // Check bullet collisions HERE
+    //bullet collisions
     if (level_mgr_.get_current_level() == 1) {
         // Check player bullets vs trees
-        for (auto& bullet : player_bullets_.get_bullets()) {
+        for (auto &bullet: player_bullets_.get_bullets()) {
             if (bullet->is_active()) {
                 Vector3 bullet_pos = bullet->get_position();
 
@@ -122,7 +139,7 @@ void game_manger::update(float dt) {
             }
         }
     } else if (level_mgr_.get_current_level() == 2) {
-        // Check player bullets vs enemies
+        // player bullets vs enemies
         int enemies_killed = level_mgr_.get_enemy_manager().check_bullet_hits(
             player_bullets_.get_bullets());
 
@@ -131,7 +148,7 @@ void game_manger::update(float dt) {
         }
     }
 
-    // Handle portal transition
+    //Entering portal
     if (events.portal_reached && level_mgr_.get_current_level() == 1) {
         std::cout << "Entering Level 2..." << std::endl;
         level_mgr_.setup_level_2();

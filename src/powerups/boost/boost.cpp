@@ -6,10 +6,10 @@ using namespace threepp;
 power_up_boost::power_up_boost(Vector3 position) : initial_y_(position.y) {//From threepp examples/SphereGeometry
     auto geometry = SphereGeometry::create(2, 32, 32);
 
-    //Tatt fra threepp clipping eksempel for å lage Meshpongmaterialet
+    //Found examepl on threepp clipping on how to use Meshpongmaterialet
     auto material = MeshPhongMaterial::create({{"color", Color::yellow},
     {"emissive", Color::orange},
-    {"emissiveInentsety", 0.5f}}); //For å gjør powerupen gul med gjenskinn
+    {"emissiveIntensity", 0.5f}}); //To make it glow a bit
 
         mesh_ = Mesh::create(geometry, material);
         mesh_->position.copy(position);

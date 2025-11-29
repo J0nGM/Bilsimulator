@@ -7,9 +7,11 @@ private:
     std::shared_ptr<threepp::Mesh> mesh_;
     threepp::Vector3 position_;
     float shoot_timer_{0};
-    const float shoot_intreval_{2.0f};
+    const float shoot_intreval_{3.5f};
     int hp_{1};
     bool is_destryd{false};
+    const float bullet_spawn_height_{2.0f};
+
 
 public:
     Enemy(threepp::Vector3 position);
@@ -25,6 +27,7 @@ public:
     threepp::Vector3 get_position() const { return position_; }
     std::shared_ptr<threepp::Mesh> get_mesh() const { return mesh_; }
     int get_health() const { return hp_; }
+    float get_bullet_spawn_height() const { return bullet_spawn_height_; }
 };
 
 #endif //TANK_ENEMY_HPP

@@ -11,6 +11,7 @@
 #include "camercontrolls.hpp"
 #include "bulletmanager.hpp"
 #include "levelmanger.hpp"
+#include "trailmanager.hpp"
 
 class game_manger {
 private:
@@ -28,8 +29,12 @@ private:
     level_manger level_mgr_;
 
     bool level_completed_ {false};
-    int player_hp_ {8};
+    int player_hp_ {10};
     bool game_over_ {false};
+
+    std::unique_ptr<trail_manager>trail_manager_;
+    float time_since_last_trail_{0.0f};
+    const float trail_interval_{0.1f}; //New trail every 0.1 seconds
 
 public:
     game_manger(
