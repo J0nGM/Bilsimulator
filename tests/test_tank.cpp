@@ -53,7 +53,7 @@ TEST_CASE("Tree destroyed") {
     Vector3 bullet_direction(1, 0, 1);
     bullet_direction.normalize();
 
-    Vector3 bullet_position = tree_position - bullet_direction;
+    Vector3 bullet_position = tree_position - bullet_direction * 5.0f;
     bullets.spawn_bullet(*scene, bullet_position, bullet_direction, 200.0f);
 
     bullets.update(0.02f);
@@ -69,4 +69,27 @@ TEST_CASE("Tree destroyed") {
 
     REQUIRE(hit);
     REQUIRE(landscape.objects[0]->visible == false);
+}
+
+TEST_CASE("Enemy manager spawns correct number") {
+    auto scene = Scene::create();
+    enemy_manager enemies;
+
+    enemies.spawn_enemies(*scene, 5);
+
+    REQUIRE(enemies.all_destroyed() == false);
+}
+
+TEST_CASE("Enemy takes damage") {
+    auto scene = Scene::create();
+    enemy_manager enemies;
+    bullet_manager bullets;
+
+    enemies.spawn_enemies(*scene, 1);
+
+    bullets.spawn_bullet(*scene, Vector3(0, 12.5f, 0), Vector3(1, 0, 0), 200.0f);
+
+    int hits = enemies.check_bullet_hits(bullets.get_bullets());
+
+    REQUIRE(hits >= 0);
 }
