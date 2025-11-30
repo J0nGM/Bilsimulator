@@ -1,5 +1,6 @@
 #include "gamemanger.hpp"
 #include "collisionmanger.hpp"
+#include "imguihandler.hpp"
 #include <cstdlib>
 #include <iostream>
 
@@ -25,12 +26,6 @@ game_manger::game_manger(
     level_mgr_.setup_level_1();
 
     trail_manager_ = std::make_unique<trail_manager>(&scene_);
-}
-
-Vector3 game_manger::random_position(float range_x, float y, float range_z) {
-    float random_x = (rand() % static_cast<int>(range_x)) - (range_x / 2);
-    float random_z = (rand() % static_cast<int>(range_z)) - (range_z / 2);
-    return Vector3(random_x, y, random_z);
 }
 
 void game_manger::reset_tank_position() {
@@ -78,8 +73,54 @@ void game_manger::handle_shooting() {
     }
 }
 
+void game_manger::restart_game() {
+    game_over_ = false;
+    victory_ = false;
+    player_hp_ = 10;
+
+    enemies_.clear(scene_);
+    pickups_.clear(scene_);
+    player_bullets_.cleanup(scene_);
+
+    reset_tank_position();
+    trail_manager_ = std::make_unique<trail_manager>(&scene_);
+
+    level_mgr_.setup_level_1();  //To reset to level 1 after done with level 2
+}
+
+void game_manger::handle_menus(imgui_handler& imgui, bool& should_quit) {
+
+    if (game_over_) {
+        bool restart = false;
+        bool quit = false;
+        imgui.game_over_menu(restart, quit);
+
+        if (restart) {
+            restart_game();
+        }
+        if (quit) {
+            should_quit = true;
+        }
+    }
+
+    if (victory_) {
+        bool restart = false;
+        bool quit = false;
+        imgui.victory_menu(restart, quit);
+
+        if (restart) {
+            restart_game();
+        }
+        if (quit) {
+            should_quit = true;
+        }
+    }
+}
+
 void game_manger::update(float dt) {
-    if (game_over_) return;
+    if (game_over_ || victory_) {
+        return;
+    }
 
     const auto &keys = key_input_.get_keys();
     if (keys.r) {
@@ -95,13 +136,14 @@ void game_manger::update(float dt) {
 
     auto events = level_mgr_.update_level(dt, tank_center);
 
-    if (tank_movement_.get_speed() > 0.3f) {  // Only spawn when tank moves
+    if (tank_movement_.get_speed() > 0.3f) {
+        //Only spawns when the tank moves
         time_since_last_trail_ += dt;
         if (time_since_last_trail_ >= trail_interval_) {
 
             //Ai assisted me here. Was struggling to get the right direction for the trail
-            Vector3 right(0, 0, 1); // Tanks local right
-            right.applyQuaternion(tank_.quaternion); //Apply rotation
+            Vector3 right(0, 0, 1);
+            right.applyQuaternion(tank_.quaternion); //Rotation
             right.normalize();
             trail_manager_->add_trail(tank_.position, right);
             time_since_last_trail_ = 0.0f;
@@ -139,18 +181,23 @@ void game_manger::update(float dt) {
             }
         }
     } else if (level_mgr_.get_current_level() == 2) {
-        // player bullets vs enemies
         int enemies_killed = level_mgr_.get_enemy_manager().check_bullet_hits(
             player_bullets_.get_bullets());
 
         if (enemies_killed > 0) {
-            std::cout << "Enemies killed: " << enemies_killed << std::endl;
+
+            level_mgr_.get_enemy_manager().remove_dead_enemies(scene_);
+        }
+
+        int enemy_count = level_mgr_.get_enemy_manager().get_enemy_count();
+
+        if (enemy_count == 0) {
+            victory_ = true;
         }
     }
 
     //Entering portal
     if (events.portal_reached && level_mgr_.get_current_level() == 1) {
-        std::cout << "Entering Level 2..." << std::endl;
         level_mgr_.setup_level_2();
         reset_tank_position();
     }

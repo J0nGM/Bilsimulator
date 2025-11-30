@@ -13,6 +13,8 @@
 #include "levelmanger.hpp"
 #include "trailmanager.hpp"
 
+class imgui_handler;
+
 class game_manger {
 private:
     threepp::Scene& scene_;
@@ -33,8 +35,8 @@ private:
     bool game_over_ {false};
 
     std::unique_ptr<trail_manager>trail_manager_;
-    float time_since_last_trail_{0.0f};
-    const float trail_interval_{0.1f}; //New trail every 0.1 seconds
+    float time_since_last_trail_ {0.0f};
+    const float trail_interval_ {0.1f}; //New trail every 0.1 seconds
 
 public:
     game_manger(
@@ -52,9 +54,11 @@ public:
     bool is_level_completed() const { return level_completed_; }
     int get_player_hp() const { return player_hp_; }
     bool is_game_over() const { return game_over_; }
+    void restart_game();
+    void handle_menus(imgui_handler& imgui, bool& should_quite);
 
 private:
-    threepp::Vector3 random_position(float range_x = 400.0f, float y = 3.0f, float range_z = 400.0f);
+    bool victory_ {false};
 
     void handle_tank_movement(float dt);
     void handle_shooting();

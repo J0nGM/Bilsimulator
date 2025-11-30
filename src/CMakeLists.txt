@@ -13,6 +13,8 @@ add_library(TankLib
         managers/pickupmanger.cpp
         managers/enemymanger.cpp
         managers/bulletmanger.cpp
+        managers/levelmanger.cpp
+        managers/trailmanager.cpp
 
         powerups/boost/boost.cpp
         powerups/bullet/bullet.cpp
@@ -21,18 +23,18 @@ add_library(TankLib
         imguihandler.cpp
         landscape_arena/arenawalls.cpp
 
-        tank.cpp
         camercontrolls.cpp
         landscape_arena/landscape.cpp
         WindowResize.cpp
         collision/collision.cpp
         gamemanger.cpp
 
-        tankattack.cpp
-        tankmovment.cpp
         keyinputhandler.cpp
-        levelmanger.cpp
-        trailmanager.cpp
+
+        tank/tank.cpp
+        tank/tankattack.cpp
+        tank/tankmovment.cpp
+
 )
 
 

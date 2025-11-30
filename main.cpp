@@ -90,6 +90,13 @@ int main() {
 
         imgui.begin_frame();
         imgui.render_ui(game);
+
+        bool should_quit = false;
+        game.handle_menus(imgui, should_quit);
+        if (should_quit) {
+            canvas.close();
+        }
+
         imgui.end_frame();
     });
 
