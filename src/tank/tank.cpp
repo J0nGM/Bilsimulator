@@ -7,7 +7,7 @@ using namespace threepp;
 float scale_tank {15.0f}; //endre på størreslen til tanksen her
 float degrees {180.0f};
 
-Tank::Tank(const std::string &path) {
+tank::tank(const std::string &path) {
     threepp::AssimpLoader loader;
     auto loadedGroup = loader.load(path);
 

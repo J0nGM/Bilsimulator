@@ -5,9 +5,9 @@
 
 
 
-class Window_resize_handler {
+class window_resize_handler {
 public:
-    Window_resize_handler(threepp::PerspectiveCamera &camera, threepp::GLRenderer &renderer);
+    window_resize_handler(threepp::PerspectiveCamera &camera, threepp::GLRenderer &renderer);
 
     void operator()(const threepp::WindowSize &size);
 

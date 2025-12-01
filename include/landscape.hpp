@@ -7,15 +7,18 @@
 class Landscape {
 protected:
     //To cahnge the size of the trees
-    const float height_tree_ {10.0f};
+    const float height_of_tree_ {10.0f};
     const float tree_log_radius_ {2.0f};
     const float tree_log_height_ {15.0f};
     const float cone_width_ {1.5f};
     const float cone_height_ {3.0f};
+    const int amount_trees_spawned_{1}; //Number of trees to spawn
+
+    const int ground_width_{500};
+    const int ground_heigth_{500};
 
 public:
-    const int num_trees_ {1};
-    std::shared_ptr<threepp::PlaneGeometry>groundGeometry = threepp::PlaneGeometry::create(500, 500);
+    std::shared_ptr<threepp::PlaneGeometry>groundGeometry = threepp::PlaneGeometry::create(ground_width_, ground_heigth_);
     std::shared_ptr<threepp::MeshStandardMaterial>groundMaterial = threepp::MeshStandardMaterial::create({{"color", threepp::Color::green}});
     std::shared_ptr<threepp::Mesh>groundMesh = threepp::Mesh::create(groundGeometry, groundMaterial);
     std::vector<std::shared_ptr<threepp::Group>> objects;

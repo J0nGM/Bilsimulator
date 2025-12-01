@@ -8,7 +8,7 @@ using namespace threepp;
 
 game_manger::game_manger(
     Scene &scene,
-    Tank &tank,
+    tank &tank,
     key_input_handler &key_input,
     Camera_follow &camera_follow,
     Landscape &landscape1,
@@ -27,17 +27,19 @@ game_manger::game_manger(
 
     trail_manager_ = std::make_unique<trail_manager>(&scene_);
 
-    // Add sphere visualization
-    auto sphereGeom = threepp::SphereGeometry::create(collision_radius_, 16, 16);
+    // Add sphere to the tank for collision
+    /*auto sphereGeom = threepp::SphereGeometry::create(collision_radius_, 16, 16);
     auto sphereMat = threepp::LineBasicMaterial::create();
     sphereMat->color = 0x00ff00;  // Green
     auto wireframe = threepp::WireframeGeometry::create(*sphereGeom);
     sphereHelper_ = threepp::LineSegments::create(wireframe, sphereMat);
-    scene_.add(sphereHelper_);
+
+    //To make the sphere around the tank visible
+    scene_.add(sphereHelper_);*/
 }
 
 void game_manger::reset_tank_position() {
-    tank_.position.set(0, 5, 0);
+    tank_.position.set(0, tank_spawn_height_, 0);
     tank_.quaternion.set(0, 0, 0, 1);
 }
 
@@ -69,13 +71,14 @@ void game_manger::handle_shooting() {
 
     if (keys.e && tank_attack_.can_shoot()) {
         Vector3 spawn_pos = tank_.position;
-        spawn_pos.y += 6.0f;
+        spawn_pos.y += bullet_spawn_height_offset_;
 
+        //From threepp examples, to get the forward direction of the tank
         Vector3 forward(-1, 0, 0); // Tank's forward direction
         forward.applyQuaternion(tank_.quaternion);
         forward.normalize();
 
-        player_bullets_.spawn_bullet(scene_, spawn_pos, forward, 200.0f);
+        player_bullets_.spawn_bullet(scene_, spawn_pos, forward, tank_bullet_speed_);
         tank_attack_.use_ammo();
         tank_attack_.start_cooldown();
     }
@@ -142,15 +145,16 @@ void game_manger::update(float dt) {
 
 
     Vector3 tank_center = tank_.position;
-    tank_center.y = 3.0f;
+    tank_center.y = tank_collision_center_height_;
 
     auto events = level_mgr_.update_level(dt, tank_center);
 
-
-    if (tank_movement_.get_speed() > 0.3f) {
+//Spawns trail when the tank is moving so that you can see the movement
+    //As assisted me a little with this part
+    if (tank_movement_.get_speed() > min_speed_for_trail_) {
         //Only spawns when the tank moves
         time_since_last_trail_ += dt;
-        if (time_since_last_trail_ >= trail_interval_) {
+        if (time_since_last_trail_ >= trail_spawn_interval_) {
 
             //Ai assisted me here. Was struggling to get the right direction for the trail
             Vector3 right(0, 0, 1);
@@ -163,24 +167,23 @@ void game_manger::update(float dt) {
 
     trail_manager_->update(dt);
 
-    sphereHelper_->position.copy(tank_.position);
+    //For visualtion of collision sphere
+    //sphereHelper_->position.copy(tank_.position);
 
-    //player damage
+    //The damged that the trank/player takes
     if (events.player_hit) {
         player_hp_--;
-        std::cout << "Player hit! HP: " << player_hp_ << std::endl;
 
         if (player_hp_ <= 0) {
             game_over_ = true;
         }
     }
 
-    //powerup pickup
+    //Powerup pickup
     level_mgr_.get_pickup_manager().check_collisions(tank_center, tank_attack_, tank_movement_);
 
-    //bullet collisions
+    //Level 1 when you are shooting the trees
     if (level_mgr_.get_current_level() == 1) {
-        // Check player bullets vs trees
         for (auto &bullet: player_bullets_.get_bullets()) {
             if (bullet->is_active()) {
                 Vector3 bullet_pos = bullet->get_position();
@@ -192,6 +195,7 @@ void game_manger::update(float dt) {
             }
         }
 
+        //Level 2 when you are shooting the enemies
     } else if (level_mgr_.get_current_level() == 2) {
         int enemies_killed = level_mgr_.get_enemy_manager().check_bullet_hits(
             player_bullets_.get_bullets());
@@ -207,8 +211,7 @@ void game_manger::update(float dt) {
             victory_ = true;
         }
     }
-
-    //Entering portal
+    //For when entering the portal to go to level 2
     if (events.portal_reached && level_mgr_.get_current_level() == 1) {
         level_mgr_.setup_level_2();
         reset_tank_position();

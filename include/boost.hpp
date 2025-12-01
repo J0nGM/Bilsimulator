@@ -16,7 +16,7 @@ public:
 
     void update(float dt);
     //Fikk hjelp av Ai for å lage en is_collcted funksjon
-    bool is_collcted() const { return collected_;}
+    bool is_collected() const { return collected_;}
     void collect() {
         collected_ = true;
         mesh_->visible = false;

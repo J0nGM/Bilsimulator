@@ -2,7 +2,7 @@
 
 using namespace threepp;
 
-Enemy::Enemy(threepp::Vector3 position) : position_(position) {
+enemy::enemy(threepp::Vector3 position) : position_(position) {
     auto body_geometry = CylinderGeometry::create(8,8,15);
     auto body_material = MeshStandardMaterial::create();
     body_material->color = Color::red;
@@ -14,15 +14,15 @@ Enemy::Enemy(threepp::Vector3 position) : position_(position) {
     mesh_->castShadow = true;
 }
 
-void Enemy::update(float dt) {
-    if (is_destryd) return;
+void enemy::update(float dt) {
+    if (is_destroyed) return;
     shoot_timer_ += dt;
 
     mesh_->rotation.y += 0.5f * dt;
 }
 
-bool Enemy::should_shoot() {
-    if (is_destryd) return false;
+bool enemy::should_shoot() {
+    if (is_destroyed) return false;
     if (shoot_timer_ >= shoot_intreval_) {
         shoot_timer_ = 0.0f;
         return true;
@@ -30,13 +30,13 @@ bool Enemy::should_shoot() {
     return false;
 }
 
-void Enemy::take_damage() {
-    if (is_destryd) {
+void enemy::take_damage() {
+    if (is_destroyed) {
     return;
 }
     hp_--;
     if (hp_ <= 0) {
-        is_destryd = true;
+        is_destroyed = true;
         mesh_->visible = false;
     }
 }

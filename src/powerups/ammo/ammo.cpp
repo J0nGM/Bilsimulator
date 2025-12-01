@@ -12,7 +12,7 @@ ammo::ammo(Vector3 position) : initla_y_(position.y){
     auto material = MeshPhongMaterial::create({
         {"color", Color(0, 1, 0.0f)}, //Ammog color green
     {"emissive", Color::green},
-    {"emissiveInentsety", 0.5f}});
+    {"emissiveIntensity", 0.5f}});
 
 
     mesh_ = Mesh::create(geometry, material);

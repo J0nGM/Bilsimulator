@@ -2,19 +2,19 @@
 #define TANK_ENEMY_HPP
 #include "threepp/threepp.hpp"
 
-class Enemy {
+class enemy {
 private:
     std::shared_ptr<threepp::Mesh> mesh_;
     threepp::Vector3 position_;
     float shoot_timer_{0};
     const float shoot_intreval_{3.5f};
     int hp_{1};
-    bool is_destryd{false};
+    bool is_destroyed{false};
     const float bullet_spawn_height_{2.0f};
 
 
 public:
-    Enemy(threepp::Vector3 position);
+    enemy(threepp::Vector3 position);
 
     void update(float dt);
 
@@ -22,7 +22,7 @@ public:
 
     void take_damage();
 
-    bool is_damaged() const { return is_destryd; }
+    bool is_damaged() const { return is_destroyed; }
 
     threepp::Vector3 get_position() const { return position_; }
     std::shared_ptr<threepp::Mesh> get_mesh() const { return mesh_; }

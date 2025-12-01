@@ -3,10 +3,10 @@
 #include <threepp/threepp.hpp>
 #include "threepp/loaders/AssimpLoader.hpp"
 
-class Tank : public threepp::Object3D {
+class tank : public threepp::Object3D {
 public:
     std::shared_ptr<threepp::Mesh> mesh = threepp::Mesh::create();
 
-    Tank(const std::string &path);
+    tank(const std::string &path);
 };
 

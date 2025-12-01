@@ -18,7 +18,7 @@ class imgui_handler;
 class game_manger {
 private:
     threepp::Scene& scene_;
-    Tank& tank_;
+    tank& tank_;
     key_input_handler& key_input_;
     Camera_follow& camera_follow_;
 
@@ -36,13 +36,28 @@ private:
 
     std::unique_ptr<trail_manager>trail_manager_;
     float time_since_last_trail_ {0.0f};
-    const float trail_interval_ {0.1f}; //New trail every 0.1 seconds
+    const float trail_interval_ {0.1f};
+
+    static constexpr float tank_spawn_height_ {5.0f};
+    static constexpr float tank_collision_center_height_ {3.0f};
+
+    //Bullet config
+    static constexpr float bullet_spawn_height_offset_ {2.0f};
+    static constexpr float tank_bullet_speed_ {200.0f};
+
+    //Trail config
+    static constexpr float trail_spawn_interval_ {0.1f};
+    static constexpr float min_speed_for_trail_ {0.3f};
+    
+    //Radius of the sphere used for collision visualization
+    std::shared_ptr<threepp::LineSegments> sphereHelper_;
+    float collision_radius_ = 8.0f;
 
 
 public:
     game_manger(
         threepp::Scene& scene,
-        Tank& tank,
+        tank& tank,
         key_input_handler& key_input,
         Camera_follow& camera_follow,
         Landscape& landscape1,
@@ -66,10 +81,6 @@ private:
 
     void handle_tank_movement(float dt);
     void handle_shooting();
-
-    //Radius of the sphere used for collision visualization
-    std::shared_ptr<threepp::LineSegments> sphereHelper_;
-    float collision_radius_ = 8.0f;
 };
 
 #endif

@@ -3,7 +3,7 @@
 #include "tank.hpp"
 #include "keyinputhandler.hpp"
 #include "landscape.hpp"
-#include "WindowResize.hpp"
+#include "windowresize.hpp"
 #include "camercontrolls.hpp"
 #include "gamemanger.hpp"
 #include "imguihandler.hpp"
@@ -17,7 +17,7 @@ void setup_scene(Scene& scene) {
     scene.add(light);
 }
 
-void setup_landscape(Scene& scene, Landscape& land, int num_trees) {
+void setup_landscape(Scene& scene, Landscape& land) {
     land.groundMesh->position.y = -0.5f;
     land.groundMesh->receiveShadow = true;
     scene.add(land.groundMesh);
@@ -27,7 +27,7 @@ void setup_landscape(Scene& scene, Landscape& land, int num_trees) {
     }
 }
 
-void setup_tank(Scene& scene, Tank& tank) {
+void setup_tank(Scene& scene, tank& tank) {
     tank.position.y = 5.0f;
     scene.add(tank);
 }
@@ -39,13 +39,13 @@ int main() {
     PerspectiveCamera camera(45, canvas.aspect(), 0.1, 10000);
     camera.position.set(0, 50, 100);
 
-    Window_resize_handler resizeHandler(camera, renderer);
+    window_resize_handler resizeHandler(camera, renderer);
     canvas.onWindowResize(resizeHandler);
 
     auto scene = Scene::create();
     setup_scene(*scene);
 
-    Tank tank("../assets/3Dmodell/viecal/Tank.glb");
+    tank tank("../assets/3Dmodell/viecal/Tank.glb");
     setup_tank(*scene, tank);
 
     key_input_handler key_controls;
@@ -54,7 +54,7 @@ int main() {
     Camera_follow camera_follow(camera, tank, key_controls, Vector3(60, 20, 0));
 
     Landscape land;
-    setup_landscape(*scene, land, land.num_trees_);
+    setup_landscape(*scene, land);
     
     game_manger game(
         *scene,
