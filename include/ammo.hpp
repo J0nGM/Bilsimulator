@@ -8,7 +8,7 @@ private:
     float lifetime_ {0.0f};
     float initla_y_;
     bool collected_{false};
-    int amount_ammo_per_pickup_{5};
+    int amount_ammo_per_pickup_{2};
 
 public:
 

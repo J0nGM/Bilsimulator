@@ -7,6 +7,7 @@
 #include "camercontrolls.hpp"
 #include "gamemanger.hpp"
 #include "imguihandler.hpp"
+#include "landscape.hpp"
 
 using namespace threepp;
 
@@ -23,16 +24,6 @@ void setup_landscape(Scene& scene, Landscape& land, int num_trees) {
 
     for (const auto& road : land.roads) {
         scene.add(road);
-    }
-
-    for (int i = 0; i < num_trees; i++) {
-        float random_x = (rand() % 500) - 250;
-        float random_z = (rand() % 500) - 250;
-        land.add_tree(Vector3(random_x, 0, random_z));
-    }
-
-    for (const auto& tree : land.objects) {
-        scene.add(tree);
     }
 }
 
@@ -59,12 +50,11 @@ int main() {
 
     key_input_handler key_controls;
     canvas.addKeyListener(key_controls);
-    std::cout << "Use WASD keys to steer tank, Press 'r' to reset tank position." << std::endl;
 
     Camera_follow camera_follow(camera, tank, key_controls, Vector3(60, 20, 0));
 
     Landscape land;
-    setup_landscape(*scene, land, 1);
+    setup_landscape(*scene, land, land.num_trees_);
     
     game_manger game(
         *scene,

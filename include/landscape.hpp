@@ -14,6 +14,7 @@ protected:
     const float cone_height_ {3.0f};
 
 public:
+    const int num_trees_ {1};
     std::shared_ptr<threepp::PlaneGeometry>groundGeometry = threepp::PlaneGeometry::create(500, 500);
     std::shared_ptr<threepp::MeshStandardMaterial>groundMaterial = threepp::MeshStandardMaterial::create({{"color", threepp::Color::green}});
     std::shared_ptr<threepp::Mesh>groundMesh = threepp::Mesh::create(groundGeometry, groundMaterial);
@@ -21,9 +22,16 @@ public:
 
     std::vector<std::shared_ptr<threepp::Mesh>> roads;
 
+    //This is so that landscape 2 can inherit from landscape 1. Got som ai help
     Landscape();
     Landscape(float ground_size);
     virtual ~Landscape() = default; //for arv
     void add_tree(threepp::Vector3 position);
+
+    void spawn_trees(
+    threepp::Scene& scene,
+    std::function<threepp::Vector3(float, float, float)> random_position_func,
+    float landscape_width,
+    float landscape_depth);
 };
 #endif //TANK_lANDSCAPE_HPP

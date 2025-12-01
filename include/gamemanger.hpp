@@ -30,13 +30,14 @@ private:
     enemy_manager enemies_;
     level_manger level_mgr_;
 
-    bool level_completed_ {false};
+
     int player_hp_ {10};
     bool game_over_ {false};
 
     std::unique_ptr<trail_manager>trail_manager_;
     float time_since_last_trail_ {0.0f};
     const float trail_interval_ {0.1f}; //New trail every 0.1 seconds
+
 
 public:
     game_manger(
@@ -51,17 +52,24 @@ public:
     void reset_tank_position();
 
     int get_current_level() const { return level_mgr_.get_current_level(); }
-    bool is_level_completed() const { return level_completed_; }
     int get_player_hp() const { return player_hp_; }
     bool is_game_over() const { return game_over_; }
     void restart_game();
     void handle_menus(imgui_handler& imgui, bool& should_quite);
+
+    //For the Imgui display
+    int get_ammo_count() const { return tank_attack_.get_ammo(); }
+    float get_boost_time_left() const { return tank_movement_.get_boost_time_left(); }
 
 private:
     bool victory_ {false};
 
     void handle_tank_movement(float dt);
     void handle_shooting();
+
+    //Radius of the sphere used for collision visualization
+    std::shared_ptr<threepp::LineSegments> sphereHelper_;
+    float collision_radius_ = 8.0f;
 };
 
 #endif

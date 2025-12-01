@@ -26,6 +26,14 @@ game_manger::game_manger(
     level_mgr_.setup_level_1();
 
     trail_manager_ = std::make_unique<trail_manager>(&scene_);
+
+    // Add sphere visualization
+    auto sphereGeom = threepp::SphereGeometry::create(collision_radius_, 16, 16);
+    auto sphereMat = threepp::LineBasicMaterial::create();
+    sphereMat->color = 0x00ff00;  // Green
+    auto wireframe = threepp::WireframeGeometry::create(*sphereGeom);
+    sphereHelper_ = threepp::LineSegments::create(wireframe, sphereMat);
+    scene_.add(sphereHelper_);
 }
 
 void game_manger::reset_tank_position() {
@@ -34,27 +42,27 @@ void game_manger::reset_tank_position() {
 }
 
 void game_manger::handle_tank_movement(float dt) {
-    Vector3 old_position = tank_.position;
+        Vector3 old_position = tank_.position;
 
-    const auto &keys = key_input_.get_keys();
-    bool boost_active = keys.space;
-    float boost_mult = tank_movement_.get_boost_multiplier(boost_active);
+        const auto &keys = key_input_.get_keys();
+        bool boost_active = keys.space;
+        float boost_mult = tank_movement_.get_boost_multiplier(boost_active);
 
-    tank_movement_.update(keys, dt, boost_mult);
+        tank_movement_.update(keys, dt, boost_mult);
 
-    Box3 bb;
-    bb.setFromObject(tank_);
+        Vector3 tank_center = tank_.position;
 
-    if (level_mgr_.check_wall_collision(bb)) {
+        if (level_mgr_.check_wall_collision_sphere(tank_center, collision_radius_)) {
         tank_.position.copy(old_position);
-    }
+        }
 
-    if (level_mgr_.get_current_level() == 2) {
-        if (level_mgr_.check_barrier_collision(bb)) {
+        if (level_mgr_.get_current_level() == 2) {
+        if (level_mgr_.check_barrier_collision_sphere(tank_center, collision_radius_)) {
             tank_.position.copy(old_position);
         }
     }
 }
+
 
 void game_manger::handle_shooting() {
     const auto &keys = key_input_.get_keys();
@@ -117,6 +125,7 @@ void game_manger::handle_menus(imgui_handler& imgui, bool& should_quit) {
     }
 }
 
+
 void game_manger::update(float dt) {
     if (game_over_ || victory_) {
         return;
@@ -131,10 +140,12 @@ void game_manger::update(float dt) {
     handle_tank_movement(dt);
     handle_shooting();
 
+
     Vector3 tank_center = tank_.position;
     tank_center.y = 3.0f;
 
     auto events = level_mgr_.update_level(dt, tank_center);
+
 
     if (tank_movement_.get_speed() > 0.3f) {
         //Only spawns when the tank moves
@@ -152,6 +163,7 @@ void game_manger::update(float dt) {
 
     trail_manager_->update(dt);
 
+    sphereHelper_->position.copy(tank_.position);
 
     //player damage
     if (events.player_hit) {
@@ -160,7 +172,6 @@ void game_manger::update(float dt) {
 
         if (player_hp_ <= 0) {
             game_over_ = true;
-            std::cout << "Game Over!" << std::endl;
         }
     }
 
@@ -180,6 +191,7 @@ void game_manger::update(float dt) {
                 }
             }
         }
+
     } else if (level_mgr_.get_current_level() == 2) {
         int enemies_killed = level_mgr_.get_enemy_manager().check_bullet_hits(
             player_bullets_.get_bullets());
