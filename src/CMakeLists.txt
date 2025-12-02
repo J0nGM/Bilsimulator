@@ -25,7 +25,7 @@ add_library(TankLib
 
         camercontrolls.cpp
         landscape_arena/landscape.cpp
-        WindowResize.cpp
+        windowresize.cpp
         collision/collision.cpp
         gamemanger.cpp
 
