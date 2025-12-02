@@ -14,7 +14,7 @@ public:
     static constexpr float pickup_collect_radius {5.0f};
     static constexpr float portal_activate_radius {10.0f};
 
-    static constexpr float tree_collision_padding {10.0f};
+    static constexpr float tree_collision_padding {3.0f};
 
     static constexpr float bullet_tree_collision_distance {10.0f};
     static constexpr float bullet_barrier_collision_radius {5.0f};
@@ -24,12 +24,12 @@ public:
         const threepp::Box3& box,
         const std::vector<std::shared_ptr<threepp::Group>>& objects);
 
-    // KEEP THESE - still needed!
+    //Check collision with arena walls
     static bool check_wall_collision(
         const threepp::Box3& box,
         const arena_walls& arena);
 
-    // KEEP THESE - still needed!
+    //CHeck the collision with barriers
     static bool check_barrier_collision(
         const threepp::Box3& box,
         const obstacle_manger_lvl2& obstacle_manager);

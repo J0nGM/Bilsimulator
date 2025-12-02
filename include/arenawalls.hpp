@@ -17,6 +17,8 @@ public:
 
     float get_arena_size() const { return arena_size_; }
 
+    void remove_walls_from_scene(threepp::Scene& scene);
+
 private:
     std::vector<std::shared_ptr<threepp::Mesh>> walls_;
     float arena_size_ = 250.0f;

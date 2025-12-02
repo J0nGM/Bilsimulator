@@ -30,14 +30,11 @@ private:
     enemy_manager enemies_;
     level_manger level_mgr_;
 
-
     int player_hp_ {10};
     bool game_over_ {false};
+    bool victory_ {false};
 
-    std::unique_ptr<trail_manager>trail_manager_;
-    float time_since_last_trail_ {0.0f};
-    const float trail_interval_ {0.1f};
-
+    //Tank config
     static constexpr float tank_spawn_height_ {5.0f};
     static constexpr float tank_collision_center_height_ {3.0f};
 
@@ -46,13 +43,14 @@ private:
     static constexpr float tank_bullet_speed_ {200.0f};
 
     //Trail config
+    std::unique_ptr<trail_manager>trail_manager_;
+    float time_since_last_trail_ {0.0f};
     static constexpr float trail_spawn_interval_ {0.1f};
     static constexpr float min_speed_for_trail_ {0.3f};
-    
+
     //Radius of the sphere used for collision visualization
     std::shared_ptr<threepp::LineSegments> sphereHelper_;
     float collision_radius_ = 8.0f;
-
 
 public:
     game_manger(
@@ -69,16 +67,13 @@ public:
     int get_current_level() const { return level_mgr_.get_current_level(); }
     int get_player_hp() const { return player_hp_; }
     bool is_game_over() const { return game_over_; }
-    void restart_game();
-    void handle_menus(imgui_handler& imgui, bool& should_quite);
+    void handle_menus(imgui_handler& imgui, bool& should_quit);
 
     //For the Imgui display
     int get_ammo_count() const { return tank_attack_.get_ammo(); }
     float get_boost_time_left() const { return tank_movement_.get_boost_time_left(); }
 
 private:
-    bool victory_ {false};
-
     void handle_tank_movement(float dt);
     void handle_shooting();
 };
