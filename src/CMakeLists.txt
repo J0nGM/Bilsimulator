@@ -1,6 +1,6 @@
 add_library(TankLib
         collision/collision.cpp
-        collision/collisionmanager.cpp
+        collision/collisionmanger.cpp
 
         landscape_arena/arenawalls.cpp
         landscape_arena/landscape.cpp
