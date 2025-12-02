@@ -66,7 +66,7 @@ target_link_libraries(imgui_glfw PUBLIC
 #Found out that X11 required for ImGui on Linux
 if(UNIX AND NOT APPLE)
     find_package(X11 REQUIRED)
-    target_link_libraries(TankSim PUBLIC ${X11_LIBRARIES})
+    target_link_libraries(imgui_glfw PUBLIC ${X11_LIBRARIES})
 endif()
 
 target_include_directories(imgui_glfw PUBLIC
