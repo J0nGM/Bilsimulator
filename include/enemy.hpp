@@ -12,7 +12,6 @@ private:
     bool is_destroyed{false};
     const float bullet_height_enemy_{2.0};
 
-
 public:
     enemy(threepp::Vector3 position);
 

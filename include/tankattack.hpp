@@ -10,9 +10,13 @@ private:
 
 public:
     void add_ammo(int amount);
+
     bool can_shoot() const;
+
     void start_cooldown();
+
     void use_ammo();
+
     void update(float dt);
 
     int get_ammo() const { return ammo_; }

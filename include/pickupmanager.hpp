@@ -15,11 +15,12 @@ private:
     std::vector<std::unique_ptr<power_up_boost> > powerups_;
     std::vector<std::unique_ptr<ammo> > ammo_;
 
-    static constexpr float pickup_collection_radius_ {5.0};
+    static constexpr float pickup_collection_radius_{5.0};
 
 public:
-    void spawn_powerups(threepp::Scene& scene, int count, float range_x, float range_z, float height);
-    void spawn_ammo(threepp::Scene& scene, int count, float range_x, float range_z, float height);
+    void spawn_powerups(threepp::Scene &scene, int count, float range_x, float range_z, float height);
+
+    void spawn_ammo(threepp::Scene &scene, int count, float range_x, float range_z, float height);
 
     void update(float dt);
 

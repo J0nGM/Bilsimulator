@@ -1,4 +1,5 @@
-#Took this from the threepp repo:
+#Used the threepp proejct as a reference and template.
+#https://github.com/markaren/threepp/blob/master/.github/workflows/config.yml
 name: Build
 on: [push, workflow_dispatch]
 

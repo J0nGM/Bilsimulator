@@ -2,7 +2,7 @@ add_library(TankLib
         collision/collision.cpp
         collision/collisionmanger.cpp
 
-        landscape_arena/arenaWalls.cpp
+        landscape_arena/arenawalls.cpp
         landscape_arena/landscape.cpp
 
         level2/portalLVL2.cpp
@@ -20,10 +20,9 @@ add_library(TankLib
 
         powerups/boost/boost.cpp
         powerups/bullet/bullet.cpp
-        powerups/ammo/Ammo.cpp
+        powerups/ammo/ammo.cpp
 
         imguihandler.cpp
-        landscape_arena/arenaWalls.cpp
 
         camercontrolls.cpp
         landscape_arena/landscape.cpp

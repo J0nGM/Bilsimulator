@@ -39,7 +39,7 @@ TEST_CASE("Shooting bullets") {
 
 TEST_CASE("Tree creation") {
     Landscape landscape;
-    REQUIRE(landscape.objects.size() ==0 ); //To check if the landscap start empti
+    REQUIRE(landscape.objects.size() ==0); //To check if the landscap start empti
 
     landscape.add_tree(Vector3(10, 0, 10));
 
@@ -59,14 +59,15 @@ TEST_CASE("Tree destroyed") {
     bullet_direction.normalize();
 
     Vector3 bullet_position = tree_position - bullet_direction * 5.0f;
-    bullets.spawn_bullet(*scene, bullet_position, bullet_direction, 200.0f);//Got help from AI to calculate the position
+    bullets.spawn_bullet(*scene, bullet_position, bullet_direction, 200.0f);
+    //Got help from AI to calculate the position
 
     bullets.update(0.02f);
 
     bool hit = collision_manager::check_bullet_tree_collision(
-    bullets.get_bullets()[0]->get_position(),
-    landscape.objects
-);
+        bullets.get_bullets()[0]->get_position(),
+        landscape.objects
+    );
 
     if (hit) {
         bullets.get_bullets()[0]->deactivate();

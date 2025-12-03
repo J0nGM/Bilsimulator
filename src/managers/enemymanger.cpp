@@ -6,7 +6,7 @@
 
 using namespace threepp;
 
-void enemy_manager::spawn_enemies(Scene& scene, int count, float range_x, float range_z) {
+void enemy_manager::spawn_enemies(Scene &scene, int count, float range_x, float range_z) {
     for (int i = 0; i < count; i++) {
         float random_x = (rand() % static_cast<int>(range_x * 2)) - range_x;
         float random_z = (rand() % static_cast<int>(range_z * 2)) - range_z;
@@ -17,13 +17,14 @@ void enemy_manager::spawn_enemies(Scene& scene, int count, float range_x, float 
     }
 }
 
-void enemy_manager::spawn_enemies_for_level(Scene& scene, int level) {
+void enemy_manager::spawn_enemies_for_level(Scene &scene, int level) {
     if (level == 2) {
         spawn_enemies(scene, enemies_count_, 700.0f, 700.0f); //Amount of enemies and the size of the arena
     }
 }
-void enemy_manager::update(float dt, const Vector3& tank_pos, Scene& scene) {
-    for (auto& enemy : enemies_) {
+
+void enemy_manager::update(float dt, const Vector3 &tank_pos, Scene &scene) {
+    for (auto &enemy: enemies_) {
         if (!enemy->is_damaged()) {
             enemy->update(dt);
 
@@ -49,15 +50,15 @@ void enemy_manager::update(float dt, const Vector3& tank_pos, Scene& scene) {
     enemy_bullets_.cleanup(scene);
 }
 
-int enemy_manager::check_bullet_hits(const std::vector<std::unique_ptr<bullet>>& player_bullets) {
+int enemy_manager::check_bullet_hits(const std::vector<std::unique_ptr<bullet> > &player_bullets) {
     int hits = 0;
 
-    for (auto& bullet : player_bullets) {
+    for (auto &bullet: player_bullets) {
         if (!bullet->is_active()) continue;
 
         Vector3 bullet_pos = bullet->get_position();
 
-        for (auto& enemy : enemies_) {
+        for (auto &enemy: enemies_) {
             if (enemy->is_damaged()) continue;
 
             Vector3 enemy_pos = enemy->get_position();
@@ -77,8 +78,8 @@ int enemy_manager::check_bullet_hits(const std::vector<std::unique_ptr<bullet>>&
 }
 
 
-bool enemy_manager::check_player_hit(const Vector3& tank_pos) {
-    for (auto& bullet : enemy_bullets_.get_bullets()) {
+bool enemy_manager::check_player_hit(const Vector3 &tank_pos) {
+    for (auto &bullet: enemy_bullets_.get_bullets()) {
         if (!bullet->is_active()) continue;
 
         Vector3 bullet_pos = bullet->get_position();
@@ -92,8 +93,8 @@ bool enemy_manager::check_player_hit(const Vector3& tank_pos) {
     return false;
 }
 
-void enemy_manager::push_tank_on_collision(Vector3& tank_pos) {
-    for (auto& enemy : enemies_) {
+void enemy_manager::push_tank_on_collision(Vector3 &tank_pos) {
+    for (auto &enemy: enemies_) {
         if (enemy->is_damaged()) continue;
 
         Vector3 enemy_pos = enemy->get_position();
@@ -111,7 +112,7 @@ void enemy_manager::push_tank_on_collision(Vector3& tank_pos) {
 
 
 bool enemy_manager::all_destroyed() const {
-    for (const auto& enemy : enemies_) {
+    for (const auto &enemy: enemies_) {
         if (!enemy->is_damaged()) {
             return false;
         }
@@ -119,22 +120,22 @@ bool enemy_manager::all_destroyed() const {
     return true;
 }
 
-void enemy_manager::remove_dead_enemies(Scene& scene) {
+void enemy_manager::remove_dead_enemies(Scene &scene) {
     enemies_.erase(
         std::remove_if(enemies_.begin(), enemies_.end(),
-            [&scene](const std::unique_ptr<enemy>& enemy) {
-                if (enemy->is_damaged()) {
-                    scene.remove(*enemy->get_mesh());
-                    return true;
-                }
-                return false;
-            }),
+                       [&scene](const std::unique_ptr<enemy> &enemy) {
+                           if (enemy->is_damaged()) {
+                               scene.remove(*enemy->get_mesh());
+                               return true;
+                           }
+                           return false;
+                       }),
         enemies_.end()
     );
 }
 
-void enemy_manager::clear(Scene& scene) {
-    for (auto& enemy : enemies_) {
+void enemy_manager::clear(Scene &scene) {
+    for (auto &enemy: enemies_) {
         scene.remove(*enemy->get_mesh());
     }
     enemies_.clear();

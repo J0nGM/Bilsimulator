@@ -2,7 +2,7 @@
 
 using namespace threepp;
 
-tank_movement::tank_movement(tank& tank_obj)
+tank_movement::tank_movement(tank &tank_obj)
     : tank_(&tank_obj) {
 }
 

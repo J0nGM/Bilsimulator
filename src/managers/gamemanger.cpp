@@ -105,7 +105,7 @@ void game_manger::restart_game() {
     player_bullets_.cleanup(scene_);
 
     //Remove trees from scene when restarting
-    for (auto& tree : level_mgr_.get_landscape().objects) {
+    for (auto &tree: level_mgr_.get_landscape().objects) {
         scene_.remove(*tree);
     }
     level_mgr_.get_landscape().objects.clear();
@@ -172,7 +172,6 @@ void game_manger::update(float dt) {
         //Only spawns when the tank moves
         time_since_last_trail_ += dt;
         if (time_since_last_trail_ >= trail_spawn_interval_) {
-
             //AI assisted me here. Was struggling to get the right direction for the trail
             Vector3 right(0, 0, 1);
             right.applyQuaternion(tank_.quaternion); //Rotation

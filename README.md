@@ -5,14 +5,14 @@ ___
 
 Exam for i Object-Oriented Programming.
 
-This project is a simple 3D tank game, created using the threepp libary
-The player controls a tank that can move around an arena, shoot bullets, collect power-ups and fight enemis
+This project is a simple 3D tank game, created using the threepp library.
+The player controls a tank that can move around an arena, shoot bullets, collect power-ups and fight enemies.
 
 - You drive around in an arena
-- Collect power-ups that is speed boost and ammo
--Level 1 you need to shoot down all the trees to unlock level 2.
+- Collect powerups that is speed boost and ammo
+- Level 1 you need to shoot down all the trees to unlock level 2.
 - A portal take you to level 2
--In Level 2 you need to destroy all enemy turrets to win the game
+- In Level 2 you need to destroy all enemy turrets to win the game
 - You only have 10 HP, if you get hit 10 times you lose the game
 - If you drive into an enemy turrent you also lose the game
 
@@ -75,9 +75,9 @@ Good luck and have fun!
 -3D moddel Tank license: Tank by Nico _ [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/41Tq_Kf0Tui)
 -Three.js library: https://threejs.org/
 - Used exampels from threepp: https://github.com/markaren/threepp#
-- To create Git hub. actions I used the one threpp examples as a guide: https://github.com/markaren/threepp/blob/master/.github/workflows/config.yml
-- Used AI for help with writing some funcitons, helpiing me with bug fixes and help explaining concepts I struggled with. Claud, ChatGPT and GitHub Copilot.
-- Used the ImGui libary for creating a simple in game UI: https://github.com/ocornut/imgui. 
+- To create Github actions I used the one threpp examples as a guide: https://github.com/markaren/threepp/blob/master/.github/workflows/config.yml
+- Used AI for help with writing some functions, helping me with bug fixes and help explaining concepts I struggled with (Claud, ChatGPT and GitHub Copilot)
+- Used the ImGui library for creating a simple in game UI: https://github.com/ocornut/imgui. 
 - Used the examepl https://github.com/ocornut/imgui/tree/master/examples/example_glfw_opengl3
 
 

@@ -6,7 +6,7 @@
 
 class tank_movement {
 private:
-    tank* tank_;
+    tank *tank_;
     float speed_{0.0};
     float boost_time_left_{0.0};
 
@@ -17,12 +17,13 @@ private:
     static constexpr float boost_multiplier_{4.0};
 
 public:
-    explicit tank_movement(tank& tank_obj);
+    explicit tank_movement(tank &tank_obj);
 
-    void update(const key_input_handler::KeyState& input, float dt, float speed_multiplier);
+    void update(const key_input_handler::KeyState &input, float dt, float speed_multiplier);
 
     float get_speed() const { return speed_; }
     float get_boost_time_left() const { return boost_time_left_; }
+
     float get_boost_multiplier(bool boost_active) const;
 
     void add_boost();

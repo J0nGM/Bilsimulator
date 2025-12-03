@@ -6,7 +6,7 @@
 
 using namespace threepp;
 
-void pickup_manager::spawn_powerups(Scene& scene, int count, float range_x, float range_z, float height) {
+void pickup_manager::spawn_powerups(Scene &scene, int count, float range_x, float range_z, float height) {
     for (int i = 0; i < count; i++) {
         float random_x = (rand() % static_cast<int>(range_x * 2)) - range_x; //AI assisted in finding rand()
         float random_z = (rand() % static_cast<int>(range_z * 2)) - range_z;
@@ -17,7 +17,7 @@ void pickup_manager::spawn_powerups(Scene& scene, int count, float range_x, floa
     }
 }
 
-void pickup_manager::spawn_ammo(Scene& scene, int count, float range_x, float range_z, float height) {
+void pickup_manager::spawn_ammo(Scene &scene, int count, float range_x, float range_z, float height) {
     for (int i = 0; i < count; i++) {
         float random_x = (rand() % static_cast<int>(range_x * 2)) - range_x;
         float random_z = (rand() % static_cast<int>(range_z * 2)) - range_z;
@@ -29,21 +29,21 @@ void pickup_manager::spawn_ammo(Scene& scene, int count, float range_x, float ra
 }
 
 void pickup_manager::update(float dt) {
-    for (auto& powerup : powerups_) {
+    for (auto &powerup: powerups_) {
         if (!powerup->is_collected()) {
             powerup->update(dt);
         }
     }
 
-    for (auto& ammo_pickup : ammo_) {
+    for (auto &ammo_pickup: ammo_) {
         if (!ammo_pickup->is_collected()) {
             ammo_pickup->update(dt);
         }
     }
 }
 
-void pickup_manager::check_collisions(const threepp::Vector3& tank_pos, tank_attack& attack, tank_movement& movement){
-    for (auto& powerup : powerups_) {
+void pickup_manager::check_collisions(const threepp::Vector3 &tank_pos, tank_attack &attack, tank_movement &movement) {
+    for (auto &powerup: powerups_) {
         if (!powerup->is_collected()) {
             Vector3 powerup_pos = powerup->get_Position();
             float distance = collision_manager::calculate_distance(tank_pos, powerup_pos);
@@ -55,7 +55,7 @@ void pickup_manager::check_collisions(const threepp::Vector3& tank_pos, tank_att
         }
     }
 
-    for (auto& ammo_pickup : ammo_) {
+    for (auto &ammo_pickup: ammo_) {
         if (!ammo_pickup->is_collected()) {
             Vector3 ammo_pos = ammo_pickup->get_Position();
             float distance = collision_manager::calculate_distance(tank_pos, ammo_pos);
@@ -69,13 +69,13 @@ void pickup_manager::check_collisions(const threepp::Vector3& tank_pos, tank_att
 }
 
 
-void pickup_manager::clear(Scene& scene) {
-    for (auto& powerup : powerups_) {
+void pickup_manager::clear(Scene &scene) {
+    for (auto &powerup: powerups_) {
         scene.remove(*powerup->getMesh());
     }
     powerups_.clear();
 
-    for (auto& ammo_pickup : ammo_) {
+    for (auto &ammo_pickup: ammo_) {
         scene.remove(*ammo_pickup->getMesh());
     }
     ammo_.clear();

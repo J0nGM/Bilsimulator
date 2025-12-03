@@ -1,11 +1,10 @@
-
 #include <iostream>
 #include "collision.hpp"
 
 using namespace threepp;
 //Using AI for child
-bool collision::check_collision(Box3 tank_box, std::vector<std::shared_ptr<threepp::Group>> objects) {
-    for (const auto&obj : objects) {
+bool collision::check_collision(Box3 tank_box, std::vector<std::shared_ptr<threepp::Group> > objects) {
+    for (const auto &obj: objects) {
         if (!obj->visible) continue;
         Box3 object_box;
 
@@ -13,8 +12,7 @@ bool collision::check_collision(Box3 tank_box, std::vector<std::shared_ptr<three
         if (!obj->children.empty()) {
             auto trunk = obj->children[0];
             object_box.setFromObject(*trunk);
-        }
-        else{
+        } else {
             object_box.setFromObject(*obj);
         }
 
@@ -34,7 +32,6 @@ bool collision::check_collision(Box3 tank_box, std::vector<std::shared_ptr<three
         if (tank_box.intersectsBox(object_box)) {
             std::cout << "Collision detected!" << std::endl;
             return true;
-
         }
     }
     return false;

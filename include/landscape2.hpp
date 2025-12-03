@@ -3,7 +3,8 @@
 
 
 #include "landscape.hpp"
-class Landscape2 : public Landscape  {
+
+class Landscape2 : public Landscape {
 public:
     Landscape2();
 };
