@@ -10,9 +10,7 @@ class obstacle_manger_lvl2;
 class collision_manager {
 private:
     static constexpr float player_hit_radius_{5.0};
-    static constexpr float pickup_collect_radius_{20.0};
     static constexpr float portal_activate_radius_{10.0};
-
     static constexpr float tree_collision_padding_{3.0};
 
     static constexpr float bullet_tree_collision_distance_{5.0};

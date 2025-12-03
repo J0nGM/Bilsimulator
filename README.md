@@ -58,9 +58,8 @@ Good luck and have fun!
 
 
 #### What can be improved:
-- The tank movement could be smoother and more responsive. Also inmport bullet physics to make it more realistic
+- The tank movement could be smoother and more responsive. Also, import bulletphysics to make it more realistic
 - Better collision detection between the tank, bullets and other objects in the game
-- The trail could be more stabel geomtry wise, nut rotat when the tank turns
 - The level design could be more varied and interesting, with different themes and challenges
 - Adding sound effects creat a better the gaming experience
 - Have a better 3D model for the tank. One that actually can have rotations on the belt, so that it would look more realstic

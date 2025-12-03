@@ -50,16 +50,26 @@ void imgui_handler::game_over_menu(bool &restart_game, bool &quit_game) {
     ImGui::Begin("Game Over", nullptr,
                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 
-    ImGui::SetCursorPosY(50);
-    ImGui::Text("Game Over");
+    //Center "Game Over" text
+    ImGui::SetCursorPosY(30);
+    float text_width = ImGui::CalcTextSize("Game Over").x;
+    ImGui::SetCursorPosX((window_size.x - text_width) * 0.5f);
+    ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Game Over");
 
+    //Center buttons
     ImGui::SetCursorPosY(100);
-    if (ImGui::Button("Restart Game", ImVec2(150, 40))) {
+    float button_width = 150.0f;
+    float spacing = 20.0f;
+    float total_width = button_width * 2 + spacing;
+    float start_x = (window_size.x - total_width) * 0.5f;
+
+    ImGui::SetCursorPosX(start_x);
+    if (ImGui::Button("Restart Game", ImVec2(button_width, 40))) {
         restart_game = true;
     }
 
-    ImGui::SameLine();
-    if (ImGui::Button("Exit Game", ImVec2(150, 40))) {
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Exit Game", ImVec2(button_width, 40))) {
         quit_game = true;
     }
 
@@ -127,17 +137,31 @@ void imgui_handler::victory_menu(bool &next_level, bool &quit_game) {
     ImGui::Begin("Victory!", nullptr,
                  ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 
-    ImGui::SetCursorPosY(50);
+    //Center "VICTORY!" text
+    ImGui::SetCursorPosY(30);
+    float victory_width = ImGui::CalcTextSize("VICTORY!").x;
+    ImGui::SetCursorPosX((window_size.x - victory_width) * 0.5f);
     ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "VICTORY!");
+
+    ImGui::SetCursorPosY(60);
+    float text_width = ImGui::CalcTextSize("All enemies defeated!").x;
+    ImGui::SetCursorPosX((window_size.x - text_width) * 0.5f);
     ImGui::Text("All enemies defeated!");
 
+    //Center buttons
     ImGui::SetCursorPosY(120);
-    if (ImGui::Button("Restart Game", ImVec2(180, 40))) {
+    float button_width = 180.0f;
+    float spacing = 20.0f;
+    float total_width = button_width * 2 + spacing;
+    float start_x = (window_size.x - total_width) * 0.5f;
+
+    ImGui::SetCursorPosX(start_x);
+    if (ImGui::Button("Restart Game", ImVec2(button_width, 40))) {
         next_level = true;
     }
 
-    ImGui::SameLine();
-    if (ImGui::Button("Quit", ImVec2(180, 40))) {
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Quit", ImVec2(button_width, 40))) {
         quit_game = true;
     }
 
