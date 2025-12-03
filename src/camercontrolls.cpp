@@ -30,7 +30,7 @@ void Camera_follow::update(float dt) {
     Vector3 desired_position = target_.position;
     desired_position.add(rotated_offset);
 
-    camera_.position.lerp(desired_position, smooth_speed_);
+    camera_.position.lerp(desired_position, smooth_speed_ * dt);
     camera_.lookAt(target_.position);
 }
 

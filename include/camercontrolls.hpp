@@ -10,9 +10,9 @@ private:
     threepp::Object3D &target_;
     key_input_handler &controls_;
     threepp::Vector3 base_offset_;
-    const float smooth_speed_{0.1f};
-    float min_distanse_{50.0f};
-    float max_distanse_{80.0f};
+    const float smooth_speed_{10.0};
+    float min_distanse_{50.0};
+    float max_distanse_{80.0};
 
 public:
     Camera_follow(threepp::PerspectiveCamera &camera, threepp::Object3D &target,

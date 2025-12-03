@@ -35,11 +35,17 @@ Level 2:
 
 Good luck and have fun!
 
+<p align="center">
+  <img src="./GIF/GIF_quike_gameplay.GIF" alt="Gameplay Demo" width="900">
+  <br>
+  <i>Level 1: Shooting trees and collecting power-ups</i>
+</p>
 
 
-Own evaluation:
 
-What is good:
+### Own evaluation:
+
+#### What is good:
 - What I'm most proud of in this project is the shooting mechanic and the reloading of ammo.
 - I also like that it's possible to stack the boost.
 - That the program even works at all!
@@ -48,18 +54,19 @@ What is good:
 
 
 
-What can be improved:
+#### What can be improved:
 - The tank movement could be smoother and more responsive. Also inmport bullet physics to make it more realistic.
 - The level design could be more varied and interesting, with different themes and challenges.
-- Adding sound effects and music to enhance the gaming experience.
+- Adding sound effects enhance the gaming experience.
 - Have a better 3D model for the tank. One that actually can have rotations on the belt, so that it would look more realstic.
 - More detailed textures and enviroment to make the game more immersive
 - Have a diffrent type of look on the enemies turrents.
-- Didn't have enough time to fix the barrier collision to work properly.
+- More obsticals in level 2
 - Overall I wish that I had planed this more properly from the start, so that I could have had more time to implement more features and polish the game. - That would also help me have a better structerd code
 
 
-Soruces used:
+
+#### Soruces used:
 
 -3D moddel Tank license: Tank by Nico _ [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/41Tq_Kf0Tui)
 -Three.js library: https://threejs.org/

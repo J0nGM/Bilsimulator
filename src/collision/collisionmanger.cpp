@@ -24,7 +24,7 @@ bool collision_manager::check_tree_collision(
         }
         
         //Shrink box so that it is possible to pass the trees a bit closer with ot getting stuck
-        float shrink_amount = tree_collision_padding;
+        float shrink_amount = tree_collision_padding_;
         Vector3 min = tree_box.min();
         Vector3 max = tree_box.max();
         
@@ -76,7 +76,7 @@ bool collision_manager::check_bullet_tree_collision(
         Vector3 tree_pos = tree->position;
         float distance = calculate_distance(bullet_pos, tree_pos);
         
-        if (distance < collision_distance) {
+        if (distance < bullet_tree_collision_distance_) {
             tree->visible = false;
             return true;
         }
@@ -126,7 +126,7 @@ bool collision_manager::check_barrier_collision_sphere(
         Vector3 obstacle_pos = obstacle->get_mesh()->position;
         float distance = calculate_distance(center, obstacle_pos);
 
-        if (distance < radius + bullet_barrier_collision_radius) {
+        if (distance < radius + barrier_collision_radius_) {
             return true;
         }
     }

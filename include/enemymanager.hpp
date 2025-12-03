@@ -13,7 +13,7 @@ private:
     bullet_manager enemy_bullets_;
     static constexpr int enemies_count_{12};
     static constexpr float enemy_spawn_height_{7.5};
-    static constexpr float enemy_hit_radius_{20.0};
+    static constexpr float enemy_hit_radius_{10.0};
     static constexpr float enemy_tank_push_distance_{20.0};
     static constexpr float enemy_bullet_speed_{150.0};
     static constexpr float enemy_tank_push_force_{2.0};

@@ -1,9 +1,6 @@
 #ifndef TANK_OBSTECALELVL2_HPP
 #define TANK_OBSTECALELVL2_HPP
 #include "threepp/threepp.hpp"
-#include <vector>        // Don't know if I need this
-#include <memory>        // Don't know if I need this
-#include <functional>    // Don't know if I need this
 
 enum class obsticale_type_lvl_2 {
     BARRIER
