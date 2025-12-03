@@ -22,6 +22,10 @@ void trail_manager::add_trail(const threepp::Vector3 &position, const threepp::V
     mesh_left->position.copy(position);
     mesh_left->position.y = 0.05f; //to take it a little above the ground
 
+    //Calculate rotation based on right direction
+    float angle = std::atan2(right_direction.x, right_direction.z);
+    mesh_left->rotation.y = angle;
+
     //Use the right direction to offset, Hade issues with this got a little help from AI to solve this issue
     Vector3 left_offset = right_direction;
     left_offset.multiplyScalar(-track_offset_left);
@@ -42,6 +46,8 @@ void trail_manager::add_trail(const threepp::Vector3 &position, const threepp::V
     mesh_right->position.copy(position);
     mesh_right->position.y = 0.05f;
 
+
+    mesh_right->rotation.y = angle;
     //Use the right direction to offset, Hade issues with this got a little help from AI to solve this issue
     Vector3 right_offset = right_direction;
     right_offset.multiplyScalar(track_offsett_right);
