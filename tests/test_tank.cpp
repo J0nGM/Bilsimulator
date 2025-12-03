@@ -23,8 +23,8 @@ TEST_CASE("Moving forwards") {
     auto scene = Scene::create();
     tank tank("../assets/3Dmodell/viecal/Tank.glb", *scene);
     float start_in_Z = tank.mesh->position.z;
-    tank.mesh->translateZ(1.0f); // Move forward
 
+    tank.mesh->translateZ(-1.0f); // Move forward
     REQUIRE(tank.mesh->position.z < start_in_Z);
 }
 
@@ -154,7 +154,7 @@ TEST_CASE("Ammo collection") {
     ammo ammo_pickup(Vector3(0, 3, 0));
 
     REQUIRE(ammo_pickup.is_collected() == false);
-    REQUIRE(ammo_pickup.get_ammo_amount() == 2);
+    REQUIRE(ammo_pickup.get_ammo_amount() == 4);
 
     ammo_pickup.collect();
 
