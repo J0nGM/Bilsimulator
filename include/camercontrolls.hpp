@@ -2,7 +2,7 @@
 #define TANK_CAMERCONTROLLS_HPP
 
 #include <threepp/threepp.hpp>
-#include "keyinputhandler.hpp"
+#include "keyinputmanager.hpp"
 
 class Camera_follow {
 private:

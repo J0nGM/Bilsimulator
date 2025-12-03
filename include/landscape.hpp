@@ -11,7 +11,7 @@ protected:
     const float tree_log_height_{15.0};
     const float cone_width_{1.5};
     const float cone_height_{3.0};
-    const int amount_trees_spawned_{1};
+    const int amount_trees_spawned_{10};
 
     const int ground_width_{500};
     const int ground_heigth_{500};

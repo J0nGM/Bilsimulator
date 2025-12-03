@@ -2,7 +2,7 @@
 #define TANK_TANKMOVMENT_HPP
 
 #include "tank.hpp"
-#include "keyinputhandler.hpp"
+#include "keyinputmanager.hpp"
 
 class tank_movement {
 private:

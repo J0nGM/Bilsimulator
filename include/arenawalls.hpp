@@ -3,9 +3,9 @@
 
 #include "threepp/threepp.hpp"
 
-class arena_walls {
+class arenawalls {
 public:
-    arena_walls();
+    arenawalls();
 
     void add_walls_to_scene(threepp::Scene &scene, float arena_size);
 

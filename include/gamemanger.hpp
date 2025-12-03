@@ -4,7 +4,7 @@
 #include <threepp/threepp.hpp>
 #include <memory>
 #include "tank.hpp"
-#include "keyinputhandler.hpp"
+#include "keyinputmanager.hpp"
 #include "tankattack.hpp"
 #include "tankmovment.hpp"
 #include "landscape.hpp"

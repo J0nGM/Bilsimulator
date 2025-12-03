@@ -4,18 +4,18 @@
 #include "threepp/threepp.hpp"
 
 //Using forwards declartation to reduce compile time https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c
-class arena_walls;
+class arenawalls;
 class obstacle_manger_lvl2;
 
 class collision_manager {
 private:
     static constexpr float player_hit_radius_{5.0};
-    static constexpr float pickup_collect_radius_{10.0};
+    static constexpr float pickup_collect_radius_{20.0};
     static constexpr float portal_activate_radius_{10.0};
 
     static constexpr float tree_collision_padding_{3.0};
 
-    static constexpr float bullet_tree_collision_distance_{4.0};
+    static constexpr float bullet_tree_collision_distance_{5.0};
     static constexpr float barrier_collision_radius_{2.5};
 
 public:
@@ -26,7 +26,7 @@ public:
     //Check collision with arena walls
     static bool check_wall_collision(
         const threepp::Box3 &box,
-        const arena_walls &arena);
+        const arenawalls &arena);
 
     //CHeck the collision with barriers
     static bool check_barrier_collision(
@@ -49,7 +49,7 @@ public:
     static bool check_wall_collision_sphere(
         const threepp::Vector3 &center,
         float radius,
-        const arena_walls &arena);
+        const arenawalls &arena);
 
     static bool check_barrier_collision_sphere(
         const threepp::Vector3 &center,

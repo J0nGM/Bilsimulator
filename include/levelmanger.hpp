@@ -43,7 +43,7 @@ private:
     std::unique_ptr<Landscape2> landscape2_;
 
 
-    arena_walls arena_;
+    arenawalls arena_;
     pickup_manager& pickups_;
     enemy_manager& enemies_;
     obstacle_manger_lvl2 obstacles_;

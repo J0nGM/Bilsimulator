@@ -44,7 +44,7 @@ bool collision_manager::check_tree_collision(
 
 bool collision_manager::check_wall_collision(
     const Box3& box,
-    const arena_walls& walls) {
+    const arenawalls& walls) {
     
     return walls.check_collision(box);
 }
@@ -72,10 +72,10 @@ bool collision_manager::check_bullet_tree_collision(
     //Insted of removing the tree, I just make it invisibal and then remove them when we go to lvl 2
     for (auto& tree : trees) {
         if (!tree->visible) continue;
-        
+
         Vector3 tree_pos = tree->position;
         float distance = calculate_distance(bullet_pos, tree_pos);
-        
+
         if (distance < bullet_tree_collision_distance_) {
             tree->visible = false;
             return true;
@@ -106,7 +106,7 @@ float collision_manager::calculate_distance(
 bool collision_manager::check_wall_collision_sphere(
     const Vector3& center,
     float radius,
-    const arena_walls& arena) {
+    const arenawalls& arena) {
 
     float arena_size = arena.get_arena_size();
 

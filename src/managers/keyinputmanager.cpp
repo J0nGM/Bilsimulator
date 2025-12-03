@@ -1,4 +1,4 @@
-#include "keyinputhandler.hpp"
+#include "keyinputmanager.hpp"
 
 using namespace threepp;
 

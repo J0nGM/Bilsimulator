@@ -3,10 +3,10 @@
 
 using namespace threepp;
 
-arena_walls::arena_walls() {
+arenawalls::arenawalls() {
 
 }
-void arena_walls::create_single_wall(
+void arenawalls::create_single_wall(
     threepp::Scene& scene,
     std::shared_ptr<threepp::BufferGeometry> geometry,
     std::shared_ptr<threepp::Material> material,
@@ -22,7 +22,7 @@ void arena_walls::create_single_wall(
     scene.add(wall);
 }
 
-void arena_walls::add_walls_to_scene(threepp::Scene &scene, float arena_size) {
+void arenawalls::add_walls_to_scene(threepp::Scene &scene, float arena_size) {
     clear_walls(scene);
 
     //Had an issue with arena size not being set correctly, but this line fiex it
@@ -51,14 +51,14 @@ void arena_walls::add_walls_to_scene(threepp::Scene &scene, float arena_size) {
 }
 
 //Have to remove walls from level 1, have diffrent arena sizes in level 2
-void arena_walls::clear_walls(threepp::Scene& scene) {
+void arenawalls::clear_walls(threepp::Scene& scene) {
     for (auto& wall : walls_) {
         scene.remove(*wall);
     }
     walls_.clear();
 }
 
-bool arena_walls::check_collision(const threepp::Box3& box) const {
+bool arenawalls::check_collision(const threepp::Box3& box) const {
     for (const auto& wall : walls_) {
         threepp::Box3 wall_box;
         wall_box.setFromObject(*wall);

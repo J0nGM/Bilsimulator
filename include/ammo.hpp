@@ -8,7 +8,7 @@ private:
     float lifetime_{0.0};
     float initla_y_; //Direction
     bool collected_{false};
-    int amount_ammo_per_pickup_{2};
+    int amount_ammo_per_pickup_{4};
 
 public:
     ammo(threepp::Vector3 position);

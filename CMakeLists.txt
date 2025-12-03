@@ -4,9 +4,8 @@ project(Tank LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# ---- Linux linker-fix for threepp + assimp + pugixml ----
-# På Linux linker vi både libthreepp.a og libassimp.a, som begge inneholder pugixml.
-# Denne opsjonen sier til GNU ld at det er greit med dupliserte symboler.
+
+#Fixes duplicate pugixml symbols from threepp and assimp on Linux. Had issue with Github actions. Ai assisted me
 if(UNIX AND NOT APPLE)
     add_link_options("-Wl,--allow-multiple-definition")
 endif()
@@ -71,7 +70,7 @@ target_link_libraries(imgui_glfw PUBLIC
         OpenGL::GL
 )
 
-# X11 for ImGui på Linux
+#X11 for ImGui on Linux, AI helped me with this. Had isseus without it
 if(UNIX AND NOT APPLE)
     find_package(X11 REQUIRED)
     target_link_libraries(imgui_glfw PUBLIC ${X11_LIBRARIES})
@@ -97,4 +96,3 @@ add_subdirectory(tests)
 file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Legg til target_compile_definitions(TankSim PRIVATE THREEPP_USE_ASSIMP) hvis du vil
-# ha det definert bare for hovedprogrammet.

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <threepp/threepp.hpp>
 #include "tank.hpp"
-#include "keyinputhandler.hpp"
+#include "keyinputmanager.hpp"
 #include "landscape.hpp"
 #include "windowresize.hpp"
 #include "camercontrolls.hpp"
