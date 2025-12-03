@@ -104,6 +104,11 @@ void game_manger::restart_game() {
     pickups_.clear(scene_);
     player_bullets_.cleanup(scene_);
 
+    for (auto& tree : level_mgr_.get_landscape().objects) {
+        scene_.remove(*tree);
+    }
+    level_mgr_.get_landscape().objects.clear();
+
     reset_tank_position();
     trail_manager_ = std::make_unique<trail_manager>(&scene_);
 
@@ -145,7 +150,8 @@ void game_manger::update(float dt) {
 
     const auto &keys = key_input_.get_keys();
     if (keys.r) {
-        reset_tank_position();
+        restart_game();
+        return;
     }
 
     tank_attack_.update(dt);
